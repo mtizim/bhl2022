@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca57766e-5f05-45b4-b76b-c812ee79dc7b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/bhl2022.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bhl2022.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/python/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/python/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.db" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
