@@ -6,6 +6,6 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Assets.actual.logo.image();
+    return const Text("LOGO");
   }
 }

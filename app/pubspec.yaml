@@ -29,14 +29,12 @@ dev_dependencies:
 
 
 
-flutter_gen:
-  output: lib/gen/ # Optional (default: lib/gen/)
-  line_length: 80 # Optional (default: 80)
+# flutter_gen:
+#   output: lib/gen/ # Optional (default: lib/gen/)
+#   line_length: 80 # Optional (default: 80)
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/actual/
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
