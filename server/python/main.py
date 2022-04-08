@@ -7,6 +7,7 @@ from server.python.models import Card
 
 database = Database("sqlite:///server/database.db")
 
+
 users_database = {}
 
 app = FastAPI()
