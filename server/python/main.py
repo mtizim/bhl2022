@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 
-database = Database("sqlite:///app/images.db")
+database = Database("sqlite:///server/database.db")
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",
