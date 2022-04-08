@@ -1,0 +1,1 @@
+Aplikacja która będzie użyteczna za pięć lat (wiedza o świecie, obecne nasilające się problemy)
