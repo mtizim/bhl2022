@@ -1,22 +1,19 @@
-server/.idea/**
-
-
 # Miscellaneous
 *.class
 *.log
 *.pyc
 *.swp
-app/.DS_Store
-app/.atom/
-app/.buildlog/
-app/.history
-app/.svn/
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
 
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
-app/.idea/
+.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -26,13 +23,13 @@ app/.idea/
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
-app/.dart_tool/
-app/.flutter-plugins
-app/.flutter-plugins-dependencies
-app/.packages
-app/.pub-cache/
-app/.pub/
-app/build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -44,6 +41,7 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-app/android/app/debug
-app/android/app/profile
-app/android/app/release
+/android/app/debug
+/android/app/profile
+/android/app/release
+
