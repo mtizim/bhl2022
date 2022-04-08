@@ -15,11 +15,13 @@ class MainView extends StatelessWidget {
       children: [
         BlocBuilder<AuthorizationManager, LoginState>(
           builder: (context, state) => state.map(
-            unknown: (_) => Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: C.primary,
-              child: const Center(child: AppLogo()),
+            unknown: (_) => Scaffold(
+              body: Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: C.primary,
+                child: const Center(child: AppLogo()),
+              ),
             ),
             loggedOut: (_) => Container(
               height: double.infinity,
