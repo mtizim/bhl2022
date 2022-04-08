@@ -90,4 +90,5 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 @app.get("/cards", response_model=Card)
 async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
                     current_user: User = Depends(get_current_user)):
+
     pass
