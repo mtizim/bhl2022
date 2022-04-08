@@ -8,4 +8,7 @@ class C {
   static Color fifth = const Color(0xFF7A9CC6);
 
   static String appName = "CoolApka";
+  static String appTitle = "CoolApka";
+
+  static BorderRadius borderradiusone = BorderRadius.circular(12);
 }
