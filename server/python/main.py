@@ -1,9 +1,10 @@
 from typing import Optional
-
+from databases import Database
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 
+database = Database("sqlite:///app/images.db")
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",
@@ -16,6 +17,17 @@ fake_users_db = {
 }
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def database_connect():
+    await database.connect()
+
+
+# cleanup, close database connection
+@app.on_event("shutdown")
+async def database_disconnect():
+    await database.disconnect()
 
 
 def fake_hash_password(password: str):
@@ -76,3 +88,9 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 @app.get("/users/me")
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@app.get("/cards")
+async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
+                    current_user: User = Depends(get_current_user)):
+    pass
