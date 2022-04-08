@@ -25,9 +25,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  chopper_generator: ^4.0.5
-  json_serializable: ^6.1.4
-  swagger_dart_code_generator: ^2.4.6
 
   # flutter_gen: ^4.1.6
   freezed: ^1.1.1
