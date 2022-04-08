@@ -4,11 +4,14 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from server.python.models import Card
+from server.python.filters import Filters
+from typing import List
+
 
 database = Database("sqlite:///server/database.db")
 
-
 users_database = {}
+cached_database = {}
 
 app = FastAPI()
 
@@ -19,6 +22,7 @@ async def database_connect():
     users = await database.fetch_all("SELECT * FROM USERS")
     for user in users:
         users_database[user[1]] = user[2]
+    events_database = await database.fetch_all('SELECT * FROM EVENTS')
 
 
 # cleanup, close database connection
@@ -88,7 +92,7 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 
 
 @app.get("/cards", response_model=Card)
-async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
+async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int, tags: List[str],
                     current_user: User = Depends(get_current_user)):
-
+    filters = Filters(offset=offset, cards_amount=cards_amount, money_max=money_max, money_min=money_min, min_capacity=min_capacity, tags=tags)
     pass
