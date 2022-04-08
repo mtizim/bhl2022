@@ -16,12 +16,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_hooks: ^0.18.3
   flutter_bloc: ^8.0.1
-  freezed: ^1.1.1
+  freezed_annotation: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  freezed: ^1.1.1
+  build_runner: ^2.1.8
   flutter_lints: ^1.0.0
 
 flutter:
