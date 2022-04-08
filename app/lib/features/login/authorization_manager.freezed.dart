@@ -22,13 +22,13 @@ class _$LoginStateTearOff {
     return const UnknownLoginState();
   }
 
-  LoggedOutState logged_out(String? reason) {
+  LoggedOutState loggedOut(String? reason) {
     return LoggedOutState(
       reason,
     );
   }
 
-  LoggedInState logged_in(String secret) {
+  LoggedInState loggedIn(String secret) {
     return LoggedInState(
       secret,
     );
@@ -43,44 +43,44 @@ mixin _$LoginState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(String? reason) logged_out,
-    required TResult Function(String secret) logged_in,
+    required TResult Function(String? reason) loggedOut,
+    required TResult Function(String secret) loggedIn,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownLoginState value) unknown,
-    required TResult Function(LoggedOutState value) logged_out,
-    required TResult Function(LoggedInState value) logged_in,
+    required TResult Function(LoggedOutState value) loggedOut,
+    required TResult Function(LoggedInState value) loggedIn,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -144,8 +144,8 @@ class _$UnknownLoginState implements UnknownLoginState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(String? reason) logged_out,
-    required TResult Function(String secret) logged_in,
+    required TResult Function(String? reason) loggedOut,
+    required TResult Function(String secret) loggedIn,
   }) {
     return unknown();
   }
@@ -154,8 +154,8 @@ class _$UnknownLoginState implements UnknownLoginState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
   }) {
     return unknown?.call();
   }
@@ -164,8 +164,8 @@ class _$UnknownLoginState implements UnknownLoginState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -178,8 +178,8 @@ class _$UnknownLoginState implements UnknownLoginState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownLoginState value) unknown,
-    required TResult Function(LoggedOutState value) logged_out,
-    required TResult Function(LoggedInState value) logged_in,
+    required TResult Function(LoggedOutState value) loggedOut,
+    required TResult Function(LoggedInState value) loggedIn,
   }) {
     return unknown(this);
   }
@@ -188,8 +188,8 @@ class _$UnknownLoginState implements UnknownLoginState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
   }) {
     return unknown?.call(this);
   }
@@ -198,8 +198,8 @@ class _$UnknownLoginState implements UnknownLoginState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -254,7 +254,7 @@ class _$LoggedOutState implements LoggedOutState {
 
   @override
   String toString() {
-    return 'LoginState.logged_out(reason: $reason)';
+    return 'LoginState.loggedOut(reason: $reason)';
   }
 
   @override
@@ -278,32 +278,32 @@ class _$LoggedOutState implements LoggedOutState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(String? reason) logged_out,
-    required TResult Function(String secret) logged_in,
+    required TResult Function(String? reason) loggedOut,
+    required TResult Function(String secret) loggedIn,
   }) {
-    return logged_out(reason);
+    return loggedOut(reason);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
   }) {
-    return logged_out?.call(reason);
+    return loggedOut?.call(reason);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
     required TResult orElse(),
   }) {
-    if (logged_out != null) {
-      return logged_out(reason);
+    if (loggedOut != null) {
+      return loggedOut(reason);
     }
     return orElse();
   }
@@ -312,32 +312,32 @@ class _$LoggedOutState implements LoggedOutState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownLoginState value) unknown,
-    required TResult Function(LoggedOutState value) logged_out,
-    required TResult Function(LoggedInState value) logged_in,
+    required TResult Function(LoggedOutState value) loggedOut,
+    required TResult Function(LoggedInState value) loggedIn,
   }) {
-    return logged_out(this);
+    return loggedOut(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
   }) {
-    return logged_out?.call(this);
+    return loggedOut?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
     required TResult orElse(),
   }) {
-    if (logged_out != null) {
-      return logged_out(this);
+    if (loggedOut != null) {
+      return loggedOut(this);
     }
     return orElse();
   }
@@ -393,7 +393,7 @@ class _$LoggedInState implements LoggedInState {
 
   @override
   String toString() {
-    return 'LoginState.logged_in(secret: $secret)';
+    return 'LoginState.loggedIn(secret: $secret)';
   }
 
   @override
@@ -417,32 +417,32 @@ class _$LoggedInState implements LoggedInState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() unknown,
-    required TResult Function(String? reason) logged_out,
-    required TResult Function(String secret) logged_in,
+    required TResult Function(String? reason) loggedOut,
+    required TResult Function(String secret) loggedIn,
   }) {
-    return logged_in(secret);
+    return loggedIn(secret);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
   }) {
-    return logged_in?.call(secret);
+    return loggedIn?.call(secret);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unknown,
-    TResult Function(String? reason)? logged_out,
-    TResult Function(String secret)? logged_in,
+    TResult Function(String? reason)? loggedOut,
+    TResult Function(String secret)? loggedIn,
     required TResult orElse(),
   }) {
-    if (logged_in != null) {
-      return logged_in(secret);
+    if (loggedIn != null) {
+      return loggedIn(secret);
     }
     return orElse();
   }
@@ -451,32 +451,32 @@ class _$LoggedInState implements LoggedInState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownLoginState value) unknown,
-    required TResult Function(LoggedOutState value) logged_out,
-    required TResult Function(LoggedInState value) logged_in,
+    required TResult Function(LoggedOutState value) loggedOut,
+    required TResult Function(LoggedInState value) loggedIn,
   }) {
-    return logged_in(this);
+    return loggedIn(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
   }) {
-    return logged_in?.call(this);
+    return loggedIn?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownLoginState value)? unknown,
-    TResult Function(LoggedOutState value)? logged_out,
-    TResult Function(LoggedInState value)? logged_in,
+    TResult Function(LoggedOutState value)? loggedOut,
+    TResult Function(LoggedInState value)? loggedIn,
     required TResult orElse(),
   }) {
-    if (logged_in != null) {
-      return logged_in(this);
+    if (loggedIn != null) {
+      return loggedIn(this);
     }
     return orElse();
   }

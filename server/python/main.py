@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from databases import Database
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -6,21 +6,13 @@ from pydantic import BaseModel
 from server.python.models import Card
 
 database = Database("sqlite:///server/database.db")
-<<<<<<< HEAD
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "hashed_password": "fakehashedsecret",
-    },
-    "alice": {
-        "username": "alice",
-        "hashed_password": "fakehashedsecret2",
-    },
-}
-=======
+
 
 users_database = {}
->>>>>>> 7e6fd6292f0cb7e6f7e0eb4047b74bfeecac7448
+
+
+cache_database = {}
+
 
 app = FastAPI()
 
@@ -100,6 +92,25 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 
 
 @app.get("/cards", response_model=Card)
-async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
+async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int, tags: List[str],
                     current_user: User = Depends(get_current_user)):
-    pass
+    cache_page = 50
+    name = current_user.username
+    if name not in cache_database or len(cache_database[name]) < offset + cards_amount:
+        tag_string = f""
+        for tag in tags:
+            tag_string = f"{tag_string}, '{tag}'"
+
+        cards = await database.fetch_all(f"SELECT E.* FROM EVENTS E "
+                                         f"JOIN TAGS_TO_EVENTS TE ON E.EVENT_ID = TE.EVENT_ID "
+                                         f"JOIN TAGS T ON TE.TAG_ID = T.TAG_ID "
+                                         f"WHERE T.NAME IN ({tag_string})"
+                                         f"AND E.PRICE_RANGE >= {money_min}"
+                                         f"AND E.PRICE_RANGE <= {money_max}"
+                                         f"AND E.MIN_CAPACITY <= {min_capacity}"
+                                         f"AND NOT EXISTS"
+                                         f"(SELECT * FROM EVENT_TO_USER EU"
+                                         f"JOIN USERS U ON U.USER_ID = EU.USER_ID"
+                                         f"WHERE EU.EVENT_ID = E.EVENT_ID AND U.USERNAME = {current_user.username})"
+                                         f"LIMIT {cache_page}")
+    return cache_database[name][min(len(cache_database), offset):min(offset + cards_amount, len(cache_database))]

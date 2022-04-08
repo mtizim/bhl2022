@@ -10,4 +10,3 @@ class Card(BaseModel):
     tags: List[str]
     name: str
     description: str
-
