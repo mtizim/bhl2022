@@ -3,8 +3,10 @@ from databases import Database
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
+from server.python.models import Card
 
 database = Database("sqlite:///server/database.db")
+<<<<<<< HEAD
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",
@@ -15,6 +17,10 @@ fake_users_db = {
         "hashed_password": "fakehashedsecret2",
     },
 }
+=======
+
+users_database = {}
+>>>>>>> 7e6fd6292f0cb7e6f7e0eb4047b74bfeecac7448
 
 app = FastAPI()
 
@@ -22,6 +28,9 @@ app = FastAPI()
 @app.on_event("startup")
 async def database_connect():
     await database.connect()
+    users = await database.fetch_all("SELECT * FROM USERS")
+    for user in users:
+        users_database[user[1]] = user[2]
 
 
 # cleanup, close database connection
@@ -57,7 +66,7 @@ def get_user(db, username: str):
 def fake_decode_token(token):
     # This doesn't provide any security at all
     # Check the next version
-    user = get_user(fake_users_db, token)
+    user = get_user(users_database, token)
     return user
 
 
@@ -74,7 +83,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user_dict = fake_users_db.get(form_data.username)
+    user_dict = users_database.get(form_data.username)
     if not user_dict:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = UserInDB(**user_dict)
@@ -90,7 +99,7 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@app.get("/cards")
+@app.get("/cards", response_model=Card)
 async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
                     current_user: User = Depends(get_current_user)):
     pass
