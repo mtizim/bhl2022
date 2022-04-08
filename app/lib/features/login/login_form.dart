@@ -111,6 +111,28 @@ class LoginForm extends HookWidget {
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          Material(
+            color: C.fifth,
+            borderRadius: C.borderradiusone,
+            child: InkWell(
+              onTap: () => context.read<LoginManager>().go_to_register(
+                    emailController.text,
+                    pwController.text,
+                  ),
+              borderRadius: C.borderradiusone,
+              splashColor: C.fourth,
+              child: RContainer(
+                height: 60,
+                child: Center(
+                    child: Text(
+                  "Register",
+                  style: TextStyle(color: C.secondary, fontSize: 16),
+                )),
+                width: double.infinity,
+              ),
+            ),
+          ),
         ],
       ),
     );

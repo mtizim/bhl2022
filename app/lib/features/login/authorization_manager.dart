@@ -8,8 +8,9 @@ class AuthorizationManager extends Cubit<LoginState> {
 
   void tryAutologin() async {
     // TODO read secret from local storage
-    await Future<void>.delayed(const Duration(seconds: 3));
-    emit(const LoginState.loggedOut(null));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    emit(const LoginState.loggedIn("asd"));
+    // emit(const LoginState.loggedOut("asd"));
   }
 
   void login(String secret) {
@@ -17,6 +18,13 @@ class AuthorizationManager extends Cubit<LoginState> {
     // TODO save secret on log in
 
     emit(LoginState.loggedIn(secret));
+  }
+
+  void logout() {
+    // TODO contact endpoint
+    // TODO clear secret
+
+    emit(const LoginState.loggedOut(null));
   }
 }
 

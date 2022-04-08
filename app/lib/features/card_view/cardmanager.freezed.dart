@@ -22,11 +22,9 @@ class _$CardManagerStateTearOff {
     return const CardManagerLoadingstate();
   }
 
-  CardManagerLoadedState loaded(
-      {required List<CardData> data, required int offset}) {
+  CardManagerLoadedState loaded({required List<CardData> data}) {
     return CardManagerLoadedState(
       data: data,
-      offset: offset,
     );
   }
 }
@@ -39,19 +37,19 @@ mixin _$CardManagerState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<CardData> data, int offset) loaded,
+    required TResult Function(List<CardData> data) loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CardData> data, int offset)? loaded,
+    TResult Function(List<CardData> data)? loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CardData> data, int offset)? loaded,
+    TResult Function(List<CardData> data)? loaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -135,7 +133,7 @@ class _$CardManagerLoadingstate implements CardManagerLoadingstate {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<CardData> data, int offset) loaded,
+    required TResult Function(List<CardData> data) loaded,
   }) {
     return loading();
   }
@@ -144,7 +142,7 @@ class _$CardManagerLoadingstate implements CardManagerLoadingstate {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CardData> data, int offset)? loaded,
+    TResult Function(List<CardData> data)? loaded,
   }) {
     return loading?.call();
   }
@@ -153,7 +151,7 @@ class _$CardManagerLoadingstate implements CardManagerLoadingstate {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CardData> data, int offset)? loaded,
+    TResult Function(List<CardData> data)? loaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -203,7 +201,7 @@ abstract class $CardManagerLoadedStateCopyWith<$Res> {
   factory $CardManagerLoadedStateCopyWith(CardManagerLoadedState value,
           $Res Function(CardManagerLoadedState) then) =
       _$CardManagerLoadedStateCopyWithImpl<$Res>;
-  $Res call({List<CardData> data, int offset});
+  $Res call({List<CardData> data});
 }
 
 /// @nodoc
@@ -220,17 +218,12 @@ class _$CardManagerLoadedStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? data = freezed,
-    Object? offset = freezed,
   }) {
     return _then(CardManagerLoadedState(
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<CardData>,
-      offset: offset == freezed
-          ? _value.offset
-          : offset // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -238,16 +231,14 @@ class _$CardManagerLoadedStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CardManagerLoadedState implements CardManagerLoadedState {
-  const _$CardManagerLoadedState({required this.data, required this.offset});
+  const _$CardManagerLoadedState({required this.data});
 
   @override
   final List<CardData> data;
-  @override
-  final int offset;
 
   @override
   String toString() {
-    return 'CardManagerState.loaded(data: $data, offset: $offset)';
+    return 'CardManagerState.loaded(data: $data)';
   }
 
   @override
@@ -255,15 +246,12 @@ class _$CardManagerLoadedState implements CardManagerLoadedState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is CardManagerLoadedState &&
-            const DeepCollectionEquality().equals(other.data, data) &&
-            const DeepCollectionEquality().equals(other.offset, offset));
+            const DeepCollectionEquality().equals(other.data, data));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(data),
-      const DeepCollectionEquality().hash(offset));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
@@ -275,29 +263,29 @@ class _$CardManagerLoadedState implements CardManagerLoadedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<CardData> data, int offset) loaded,
+    required TResult Function(List<CardData> data) loaded,
   }) {
-    return loaded(data, offset);
+    return loaded(data);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CardData> data, int offset)? loaded,
+    TResult Function(List<CardData> data)? loaded,
   }) {
-    return loaded?.call(data, offset);
+    return loaded?.call(data);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CardData> data, int offset)? loaded,
+    TResult Function(List<CardData> data)? loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(data, offset);
+      return loaded(data);
     }
     return orElse();
   }
@@ -335,12 +323,10 @@ class _$CardManagerLoadedState implements CardManagerLoadedState {
 }
 
 abstract class CardManagerLoadedState implements CardManagerState {
-  const factory CardManagerLoadedState(
-      {required List<CardData> data,
-      required int offset}) = _$CardManagerLoadedState;
+  const factory CardManagerLoadedState({required List<CardData> data}) =
+      _$CardManagerLoadedState;
 
   List<CardData> get data;
-  int get offset;
   @JsonKey(ignore: true)
   $CardManagerLoadedStateCopyWith<CardManagerLoadedState> get copyWith =>
       throw _privateConstructorUsedError;

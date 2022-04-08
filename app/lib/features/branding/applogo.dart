@@ -6,12 +6,9 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 72),
-      child: const Text(
-        "LOGO",
-        style: TextStyle(fontSize: 32),
-      ),
+    return const Text(
+      "LOGO",
+      style: TextStyle(fontSize: 32),
     );
   }
 }

@@ -18,130 +18,137 @@ class RegisterForm extends HookWidget {
 
     const fontStyle = TextStyle(fontSize: 20);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 64,
-        vertical: 32,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              "Email:",
-              style: TextStyle(color: C.secondary),
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<LoginManager>().go_to_login();
+        return false;
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 64,
+          vertical: 32,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(height: 4),
-          RContainer(
-            color: C.secondary,
-            height: 44,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: fontStyle,
-                controller: emailController,
-                decoration: const InputDecoration(border: InputBorder.none),
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                "Email:",
+                style: TextStyle(color: C.secondary),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              "Password:",
-              style: TextStyle(color: C.secondary),
-            ),
-          ),
-          const SizedBox(height: 4),
-          RContainer(
-            color: C.secondary,
-            height: 44,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: fontStyle,
-                controller: pwController,
-                decoration: const InputDecoration(border: InputBorder.none),
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
+            const SizedBox(height: 4),
+            RContainer(
+              color: C.secondary,
+              height: 44,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  style: fontStyle,
+                  controller: emailController,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              "Repeat password:",
-              style: TextStyle(color: C.secondary),
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(height: 4),
-          RContainer(
-            color: C.secondary,
-            height: 44,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: fontStyle,
-                decoration: const InputDecoration(border: InputBorder.none),
-                controller: pw2Controller,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                "Password:",
+                style: TextStyle(color: C.secondary),
               ),
             ),
-          ),
-          SizedBox(
-            height: 80,
-            child: Align(
-              alignment: Alignment.center,
-              child: BlocBuilder<LoginManager, LoginViewState>(
-                  builder: (context, state) {
-                return Text(
-                  state.map(login: (s) => s.error, register: (s) => s.error) ??
-                      "",
-                  style: TextStyle(color: C.tertiary),
-                  textAlign: TextAlign.center,
-                );
-              }),
+            const SizedBox(height: 4),
+            RContainer(
+              color: C.secondary,
+              height: 44,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  style: fontStyle,
+                  controller: pwController,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                ),
+              ),
             ),
-          ),
-          Material(
-            color: C.tertiary,
-            borderRadius: C.borderradiusone,
-            child: InkWell(
-              onTap: () => context.read<LoginManager>().submit_register_data(
-                    emailController.text,
-                    pwController.text,
-                    pw2Controller.text,
-                  ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                "Repeat password:",
+                style: TextStyle(color: C.secondary),
+              ),
+            ),
+            const SizedBox(height: 4),
+            RContainer(
+              color: C.secondary,
+              height: 44,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  style: fontStyle,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  controller: pw2Controller,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 80,
+              child: Align(
+                alignment: Alignment.center,
+                child: BlocBuilder<LoginManager, LoginViewState>(
+                    builder: (context, state) {
+                  return Text(
+                    state.map(
+                            login: (s) => s.error, register: (s) => s.error) ??
+                        "",
+                    style: TextStyle(color: C.tertiary),
+                    textAlign: TextAlign.center,
+                  );
+                }),
+              ),
+            ),
+            Material(
+              color: C.tertiary,
               borderRadius: C.borderradiusone,
-              splashColor: C.fourth,
-              child: RContainer(
-                height: 60,
-                child: Center(
-                    child: Text(
-                  "Register",
-                  style: TextStyle(color: C.secondary, fontSize: 16),
-                )),
-                width: double.infinity,
+              child: InkWell(
+                onTap: () => context.read<LoginManager>().submit_register_data(
+                      emailController.text,
+                      pwController.text,
+                      pw2Controller.text,
+                    ),
+                borderRadius: C.borderradiusone,
+                splashColor: C.fourth,
+                child: RContainer(
+                  height: 60,
+                  child: Center(
+                      child: Text(
+                    "Register",
+                    style: TextStyle(color: C.secondary, fontSize: 16),
+                  )),
+                  width: double.infinity,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

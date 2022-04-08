@@ -20,6 +20,9 @@ dependencies:
   chopper: ^4.0.1
   json_annotation: ^4.4.0
   http: ^0.13.4
+  swipable_stack: ^1.2.0
+  cached_network_image: ^3.2.0
+  google_fonts: ^2.3.1
 
 
 dev_dependencies:

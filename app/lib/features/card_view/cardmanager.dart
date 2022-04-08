@@ -1,3 +1,4 @@
+import 'package:app/features/filters/sidebarmanager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -6,36 +7,84 @@ part 'cardmanager.freezed.dart';
 class CardManager extends Cubit<CardManagerState> {
   CardManager() : super(const CardManagerState.loading());
 
-  void fetch() async {
-    // TODO get data from server
-    await Future<void>.delayed(Duration(milliseconds: 300));
+  late Filters filters;
+
+  void fetch(Filters filters) async {
+    this.filters = filters;
+    // TODO get data from server with filters
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    final d = CardData(
+      minCapacity: 3,
+      cost: 4,
+      address: "Schodki warszawa powiat warszawski woj warszawskie",
+      tags: [
+        "Schodki",
+        "Wódka",
+        "Chlańksko",
+        "Dużo tagów",
+        "Więcej",
+        "Family friendly"
+      ],
+      name: "Long ass event name at down town schodki warszawa",
+      description: "Lorem ipsum dolor sit amet sup dorempiditur anifemo volum ",
+      imageLink: Uri.tryParse("https://picsum.photos/280")!,
+    );
+    emit(CardManagerState.loaded(
+      data: [
+        d,
+        d,
+        d,
+        d,
+        d,
+        d,
+        d,
+        d,
+      ],
+    ));
   }
 
   void _requestMoreData() async {
-    // TODo get data from server
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    // TODo get data from server with filters
+    final d = CardData(
+      minCapacity: 3,
+      cost: 4,
+      address: "Chuj chuj chuj chuj działaj",
+      tags: [
+        "Schodki",
+        "Wódka",
+        "Chlańksko",
+        "Dużo tagów",
+        "Więcej",
+        "Family friendly"
+      ],
+      name: "Long ass event name at down town schodki warszawa",
+      description: "Lorem ipsum dolor sit amet sup dorempiditur anifemo volum ",
+      imageLink: Uri.tryParse("https://picsum.photos/280")!,
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+    state.map(loaded: (s) => s.data.add(d), loading: (_) => null);
+    print("reached end of data");
   }
 
-  void _onNext() {
+  void _onNext(int offset) {
     final newState = state.map(
       loading: (lo) => lo,
       loaded: (s) {
-        if (s.data.length - s.offset < 4) {
+        print(s.data.length);
+        print(offset);
+        if (s.data.length - offset < 5) {
           _requestMoreData();
         }
-        return s;
       },
     );
-
-    emit(newState);
   }
 
-  void interested() {
-    _onNext();
+  void interested(int offset) {
+    _onNext(offset);
   }
 
-  void uninterested() {
-    _onNext();
+  void uninterested(int offset) {
+    _onNext(offset);
   }
 }
 
@@ -44,7 +93,6 @@ class CardManagerState with _$CardManagerState {
   const factory CardManagerState.loading() = CardManagerLoadingstate;
   const factory CardManagerState.loaded({
     required List<CardData> data,
-    required int offset,
   }) = CardManagerLoadedState;
 }
 

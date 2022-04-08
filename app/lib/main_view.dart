@@ -35,14 +35,21 @@ class MainView extends StatelessWidget {
           ),
         ),
         BlocBuilder<AuthorizationManager, LoginState>(
-          builder: (context, state) => AnimatedOpacity(
-            opacity: state.map(
-              unknown: (_) => 0,
-              loggedOut: (_) => 1,
-              loggedIn: (_) => 0,
+          builder: (context, state) => IgnorePointer(
+            ignoring: state.map(
+              unknown: (_) => true,
+              loggedOut: (_) => false,
+              loggedIn: (_) => true,
             ),
-            duration: const Duration(milliseconds: 200),
-            child: AuthScreen(),
+            child: AnimatedOpacity(
+              opacity: state.map(
+                unknown: (_) => 0,
+                loggedOut: (_) => 1,
+                loggedIn: (_) => 0,
+              ),
+              duration: const Duration(milliseconds: 200),
+              child: AuthScreen(),
+            ),
           ),
         ),
       ],
