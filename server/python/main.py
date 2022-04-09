@@ -102,7 +102,7 @@ def get_datetime(string: str):
     else:
         try:
             return datetime(int(string[6:10]), int(string[3:5]), int(string[0:2]))
-        catch:
+        except:
             return None
 
 
