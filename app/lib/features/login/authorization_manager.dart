@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -18,6 +19,7 @@ class AuthorizationManager extends Cubit<LoginState> {
     // TODO save secret on log in
 
     emit(LoginState.loggedIn(secret));
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   void logout() {

@@ -94,10 +94,17 @@ class LoginForm extends HookWidget {
             color: C.tertiary,
             borderRadius: C.borderradiusone,
             child: InkWell(
-              onTap: () => context.read<LoginManager>().submit_login_data(
-                    emailController.text,
-                    pwController.text,
-                  ),
+              onTap: () async {
+                final succ =
+                    await context.read<LoginManager>().submit_login_data(
+                          emailController.text,
+                          pwController.text,
+                        );
+                if (succ) {
+                  emailController.clear();
+                  pwController.clear();
+                }
+              },
               borderRadius: C.borderradiusone,
               splashColor: C.fourth,
               child: RContainer(

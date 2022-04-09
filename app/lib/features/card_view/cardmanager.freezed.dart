@@ -343,7 +343,8 @@ class _$CardDataTearOff {
       required List<String> tags,
       required String name,
       required String description,
-      required Uri imageLink}) {
+      required Uri imageLink,
+      required Uri launch}) {
     return _CardData(
       minCapacity: minCapacity,
       cost: cost,
@@ -352,6 +353,7 @@ class _$CardDataTearOff {
       name: name,
       description: description,
       imageLink: imageLink,
+      launch: launch,
     );
   }
 }
@@ -368,6 +370,7 @@ mixin _$CardData {
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Uri get imageLink => throw _privateConstructorUsedError;
+  Uri get launch => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CardDataCopyWith<CardData> get copyWith =>
@@ -385,7 +388,8 @@ abstract class $CardDataCopyWith<$Res> {
       List<String> tags,
       String name,
       String description,
-      Uri imageLink});
+      Uri imageLink,
+      Uri launch});
 }
 
 /// @nodoc
@@ -405,6 +409,7 @@ class _$CardDataCopyWithImpl<$Res> implements $CardDataCopyWith<$Res> {
     Object? name = freezed,
     Object? description = freezed,
     Object? imageLink = freezed,
+    Object? launch = freezed,
   }) {
     return _then(_value.copyWith(
       minCapacity: minCapacity == freezed
@@ -435,6 +440,10 @@ class _$CardDataCopyWithImpl<$Res> implements $CardDataCopyWith<$Res> {
           ? _value.imageLink
           : imageLink // ignore: cast_nullable_to_non_nullable
               as Uri,
+      launch: launch == freezed
+          ? _value.launch
+          : launch // ignore: cast_nullable_to_non_nullable
+              as Uri,
     ));
   }
 }
@@ -451,7 +460,8 @@ abstract class _$CardDataCopyWith<$Res> implements $CardDataCopyWith<$Res> {
       List<String> tags,
       String name,
       String description,
-      Uri imageLink});
+      Uri imageLink,
+      Uri launch});
 }
 
 /// @nodoc
@@ -472,6 +482,7 @@ class __$CardDataCopyWithImpl<$Res> extends _$CardDataCopyWithImpl<$Res>
     Object? name = freezed,
     Object? description = freezed,
     Object? imageLink = freezed,
+    Object? launch = freezed,
   }) {
     return _then(_CardData(
       minCapacity: minCapacity == freezed
@@ -502,6 +513,10 @@ class __$CardDataCopyWithImpl<$Res> extends _$CardDataCopyWithImpl<$Res>
           ? _value.imageLink
           : imageLink // ignore: cast_nullable_to_non_nullable
               as Uri,
+      launch: launch == freezed
+          ? _value.launch
+          : launch // ignore: cast_nullable_to_non_nullable
+              as Uri,
     ));
   }
 }
@@ -516,7 +531,8 @@ class _$_CardData implements _CardData {
       required this.tags,
       required this.name,
       required this.description,
-      required this.imageLink});
+      required this.imageLink,
+      required this.launch});
 
   @override
   final int minCapacity;
@@ -532,10 +548,12 @@ class _$_CardData implements _CardData {
   final String description;
   @override
   final Uri imageLink;
+  @override
+  final Uri launch;
 
   @override
   String toString() {
-    return 'CardData(minCapacity: $minCapacity, cost: $cost, address: $address, tags: $tags, name: $name, description: $description, imageLink: $imageLink)';
+    return 'CardData(minCapacity: $minCapacity, cost: $cost, address: $address, tags: $tags, name: $name, description: $description, imageLink: $imageLink, launch: $launch)';
   }
 
   @override
@@ -551,7 +569,8 @@ class _$_CardData implements _CardData {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
-            const DeepCollectionEquality().equals(other.imageLink, imageLink));
+            const DeepCollectionEquality().equals(other.imageLink, imageLink) &&
+            const DeepCollectionEquality().equals(other.launch, launch));
   }
 
   @override
@@ -563,7 +582,8 @@ class _$_CardData implements _CardData {
       const DeepCollectionEquality().hash(tags),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(imageLink));
+      const DeepCollectionEquality().hash(imageLink),
+      const DeepCollectionEquality().hash(launch));
 
   @JsonKey(ignore: true)
   @override
@@ -579,7 +599,8 @@ abstract class _CardData implements CardData {
       required List<String> tags,
       required String name,
       required String description,
-      required Uri imageLink}) = _$_CardData;
+      required Uri imageLink,
+      required Uri launch}) = _$_CardData;
 
   @override
   int get minCapacity;
@@ -595,6 +616,8 @@ abstract class _CardData implements CardData {
   String get description;
   @override
   Uri get imageLink;
+  @override
+  Uri get launch;
   @override
   @JsonKey(ignore: true)
   _$CardDataCopyWith<_CardData> get copyWith =>

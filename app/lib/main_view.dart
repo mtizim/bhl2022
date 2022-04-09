@@ -16,6 +16,7 @@ class MainView extends StatelessWidget {
         BlocBuilder<AuthorizationManager, LoginState>(
           builder: (context, state) => state.map(
             unknown: (_) => Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Container(
                 height: double.infinity,
                 width: double.infinity,

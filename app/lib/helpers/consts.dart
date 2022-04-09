@@ -15,4 +15,15 @@ class C {
 
   static BorderRadius borderradiusone = BorderRadius.circular(12);
   static BorderRadius borderradiustwo = BorderRadius.circular(36);
+
+  static String serverAddress = "https://eventful1.herokuapp.com";
+}
+
+extension SpacedWith on List<Widget> {
+  List<Widget> spacedWith(Widget wi) {
+    return expand((e) sync* {
+      yield e;
+      yield wi;
+    }).toList().sublist(0, length * 2 - 1);
+  }
 }

@@ -12,6 +12,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (c) => LoginManager(c.read<AuthorizationManager>()),
         child: BlocBuilder<LoginManager, LoginViewState>(

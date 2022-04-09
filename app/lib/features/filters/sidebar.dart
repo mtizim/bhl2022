@@ -55,7 +55,7 @@ class Sidebar extends StatelessWidget {
                                             (money) => Material(
                                               color: (money == filters.minMoney)
                                                   ? C.secondaryDarker
-                                                  : C.secondaryLight,
+                                                  : C.secondaryLighter,
                                               child: InkWell(
                                                 onTap: () => context
                                                     .read<SidebarManager>()
@@ -120,7 +120,7 @@ class Sidebar extends StatelessWidget {
                                             (money) => Material(
                                               color: (money == filters.maxMoney)
                                                   ? C.secondaryDarker
-                                                  : C.secondaryLight,
+                                                  : C.secondaryLighter,
                                               child: InkWell(
                                                 onTap: () => context
                                                     .read<SidebarManager>()
@@ -182,7 +182,7 @@ class Sidebar extends StatelessWidget {
                                             (people) => Material(
                                               color: (people == filters.persons)
                                                   ? C.secondaryDarker
-                                                  : C.secondaryLight,
+                                                  : C.secondaryLighter,
                                               child: InkWell(
                                                 onTap: () => context
                                                     .read<SidebarManager>()
