@@ -1,3 +1,4 @@
+from datetime import datetime
 from pprint import pprint
 from typing import Optional, List
 from databases import Database
@@ -95,12 +96,19 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
+def get_datetime(string: str):
+    if string is None:
+        return None
+    else:
+        return datetime(int(string[6:10]), int(string[3:5]), int(string[0:2]))
+
+
 @app.get("/cards", response_model=List[Card])
 async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
                     current_user: User = Depends(get_current_user)):
     name = current_user.username
     if name not in cache_database or offset == 0:
-        cards = await database.fetch_all(f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION, E.EVENT_ID FROM EVENTS E "
+        cards = await database.fetch_all(f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION, E.EVENT_ID, E.START_DATE, E.END_DATE FROM EVENTS E "
                                          f"WHERE E.PRICE_RANGE >= {money_min} "
                                          f"AND E.PRICE_RANGE <= {money_max} "
                                          f"AND E.MIN_CAPACITY <= {min_capacity} "
@@ -124,7 +132,10 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
             tags = []
             for tag_row in tag_rows:
                 tags.append(tag_row[0])
-            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6], id=row[7]))
+            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2],
+                                             website_url=row[3], address=row[4], tags=tags, name=row[5],
+                                             description=row[6], id=row[7], start_date=get_datetime(row[8]),
+                                             end_date=get_datetime(row[9])))
 
     return cache_database[name][min(len(cache_database[name]), offset):min(offset + cards_amount, len(cache_database[name]))]
 
@@ -133,7 +144,8 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
 async def get_favorites(current_user: User = Depends(get_current_user)):
     user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
     cards = await database.fetch_all(
-        f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION, E.EVENT_ID FROM EVENTS E "
+        f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION, "
+        f"E.EVENT_ID, E.START_DATE, E.END_DATE FROM EVENTS E "
         f"JOIN EVENT_TO_USER EU ON E.EVENT_ID = EU.EVENT_ID "
         f"WHERE EU.USER_ID = {user_id[0][0]} AND EU.CHOICE = 1")
     res = []
@@ -146,7 +158,7 @@ async def get_favorites(current_user: User = Depends(get_current_user)):
         tags = []
         for tag_row in tag_rows:
             tags.append(tag_row[0])
-        res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6], id=row[7]))
+        res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6], id=row[7], start_date=get_datetime(row[8]), end_date=get_datetime(row[9])))
 
     return res
 

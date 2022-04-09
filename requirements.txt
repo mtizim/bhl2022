@@ -1,6 +1,6 @@
-fastapi
-databases
-uvicorn
-aiosqlite
-python-multipart
-passlib
+fastapi==0.75.1
+databases==0.5.5
+uvicorn==0.17.6
+aiosqlite==0.17.0
+python-multipart==0.0.5
+passlib==1.7.4

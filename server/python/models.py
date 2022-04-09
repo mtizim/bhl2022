@@ -1,4 +1,5 @@
-from typing import List
+from datetime import datetime
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -12,3 +13,5 @@ class Card(BaseModel):
     tags: List[str]
     name: str
     description: str
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
