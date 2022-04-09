@@ -100,7 +100,7 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
                     current_user: User = Depends(get_current_user)):
     name = current_user.username
     if name not in cache_database or offset == 0:
-        cards = await database.fetch_all(f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION FROM EVENTS E "
+        cards = await database.fetch_all(f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION, E.EVENT_ID FROM EVENTS E "
                                          f"WHERE E.PRICE_RANGE >= {money_min} "
                                          f"AND E.PRICE_RANGE <= {money_max} "
                                          f"AND E.MIN_CAPACITY <= {min_capacity} "
@@ -124,7 +124,7 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
             tags = []
             for tag_row in tag_rows:
                 tags.append(tag_row[0])
-            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
+            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6], id=row[7]))
 
     return cache_database[name][min(len(cache_database[name]), offset):min(offset + cards_amount, len(cache_database[name]))]
 
@@ -133,7 +133,7 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
 async def get_favorites(current_user: User = Depends(get_current_user)):
     user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
     cards = await database.fetch_all(
-        f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION FROM EVENTS E "
+        f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION, E.EVENT_ID FROM EVENTS E "
         f"JOIN EVENT_TO_USER EU ON E.EVENT_ID = EU.EVENT_ID "
         f"WHERE EU.USER_ID = {user_id[0][0]} AND EU.CHOICE = 1")
     res = []
@@ -146,28 +146,42 @@ async def get_favorites(current_user: User = Depends(get_current_user)):
         tags = []
         for tag_row in tag_rows:
             tags.append(tag_row[0])
-        res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
+        res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6], id=row[7]))
 
     return res
 
 
+@app.post("/clear_history")
+async def clear_history(current_user: User = Depends(get_current_user)):
+    user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
+    await database.execute(f"DELETE FROM EVENT_TO_USER WHERE USER_ID={user_id[0][0]}")
+
+
 @app.post("/register")
 async def register_user(form_data: OAuth2PasswordRequestForm = Depends()):
+    if form_data.username in users_database:
+        raise HTTPException(status_code=409, detail="Username already exists")
     password_hash = pbkdf2_sha256.hash(form_data.password)
     await database.execute(f"INSERT INTO USERS (USERNAME, HASHED_PASSWORD) VALUES ('{form_data.username}', '{password_hash}')")
     users_database.update({form_data.username: password_hash})
 
 
-@app.post("/swipe_right")
-async def swipe_right(card: Card, current_user: User = Depends(get_current_user)):
+async def swipe(event_id: int, choice: int, current_user: User):
     user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
-    event_id = await database.fetch_all(f"SELECT EVENT_ID FROM EVENTS E WHERE E.NAME='{card.name}'")
-    await database.execute(f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 1)")
+    if len(user_id) == 1:
+        existing = await database.fetch_all(
+            f"SELECT EVENT_ID FROM EVENT_TO_USER EU WHERE EU.EVENT_ID={event_id} AND EU.USER_ID={user_id[0][0]}")
+        if len(existing) == 0:
+            await database.execute(
+                f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id}, {choice})")
+
+
+@app.post("/swipe_right")
+async def swipe_right(event_id: int, current_user: User = Depends(get_current_user)):
+    await swipe(event_id, 1, current_user)
 
 
 @app.post("/swipe_left")
-async def swipe_left(card: Card, current_user: User = Depends(get_current_user)):
-    user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
-    event_id = await database.fetch_all(f"SELECT EVENT_ID FROM EVENTS E WHERE E.NAME='{card.name}'")
-    await database.execute(f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 0)")
+async def swipe_left(event_id: int, current_user: User = Depends(get_current_user)):
+    await swipe(event_id, 0, current_user)
 

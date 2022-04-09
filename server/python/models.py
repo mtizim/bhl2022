@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 
 class Card(BaseModel):
+    id: str
     min_capacity: int
     cost: int
     image_url: str
