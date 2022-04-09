@@ -4,6 +4,10 @@ import 'package:app/features/login/auths_screen.dart';
 import 'package:app/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+<<<<<<< HEAD
+=======
+import 'package:google_fonts/google_fonts.dart';
+>>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: C.appTitle,
       theme: ThemeData(
+<<<<<<< HEAD
+=======
+        textTheme: GoogleFonts.openSansTextTheme(),
+>>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
         primarySwatch: MaterialColor(
           C.primary.value,
           {

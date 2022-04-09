@@ -23,6 +23,12 @@ class AuthScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+<<<<<<< HEAD
+=======
+                  const SizedBox(
+                    height: 72,
+                  ),
+>>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
                   const AppLogo(),
                   const Spacer(),
                   state.map(

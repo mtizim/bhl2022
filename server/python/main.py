@@ -5,11 +5,15 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from server.python.models import Card
+from server.python.filters import Filters
+from typing import List
+
 
 database = Database("sqlite:///server/database.db")
 
 
 users_database = {}
+cached_database = {}
 
 
 cache_database = {}
@@ -24,6 +28,7 @@ async def database_connect():
     users = await database.fetch_all("SELECT * FROM USERS")
     for user in users:
         users_database[user[1]] = user[2]
+    events_database = await database.fetch_all('SELECT * FROM EVENTS')
 
 
 # cleanup, close database connection
@@ -99,9 +104,10 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
                                          f"AND NOT EXISTS "
                                          f"(SELECT * FROM EVENT_TO_USER EU "
                                          f"JOIN USERS U ON U.USER_ID = EU.USER_ID "
-                                         f"WHERE EU.EVENT_ID = E.EVENT_ID AND U.USERNAME = '{current_user.username}') "
+                                         f"WHERE EU.EVENT_ID = E.EVENT_ID AND U.USERNAME = '{name}') "
                                          f"GROUP BY E.NAME LIMIT {cache_page}")
         print("Fetched new data")
+        pprint(cards)
 
         if name not in cache_database:
             cache_database.update({name: []})
@@ -128,6 +134,7 @@ async def swipe_right(card: Card, current_user: User = Depends(get_current_user)
 
 @app.post("/swipe_left")
 async def swipe_left(card: Card, current_user: User = Depends(get_current_user)):
-    user_id = database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.NAME='{current_user.username}'")[0]
-    event_id = database.fetch_all(f"SELECT EVENT_ID FROM EVENTS E WHERE E.NAME='{card.name}'")[0]
+    user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
+    event_id = await database.fetch_all(f"SELECT EVENT_ID FROM EVENTS E WHERE E.NAME='{card.name}'")
     await database.execute(f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 0)")
+
