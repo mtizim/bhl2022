@@ -152,10 +152,10 @@ async def get_favorites(current_user: User = Depends(get_current_user)):
 
 
 @app.post("/register")
-async def register_user(username: str, password: str):
-    password_hash = pbkdf2_sha256.hash(password)
-    await database.execute(f"INSERT INTO USERS (USERNAME, HASHED_PASSWORD) VALUES ('{username}', '{password_hash}')")
-    users_database.update({username: password_hash})
+async def register_user(form_data: OAuth2PasswordRequestForm = Depends()):
+    password_hash = pbkdf2_sha256.hash(form_data.password)
+    await database.execute(f"INSERT INTO USERS (USERNAME, HASHED_PASSWORD) VALUES ('{form_data.username}', '{password_hash}')")
+    users_database.update({form_data.username: password_hash})
 
 
 @app.post("/swipe_right")
