@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from server.python.models import Card
 from server.python.filters import Filters
 from typing import List
+from passlib.hash import pbkdf2_sha256
 
 
 database = Database("sqlite:///server/database.db")
@@ -28,7 +29,6 @@ async def database_connect():
     users = await database.fetch_all("SELECT * FROM USERS")
     for user in users:
         users_database[user[1]] = user[2]
-    events_database = await database.fetch_all('SELECT * FROM EVENTS')
 
 
 # cleanup, close database connection
@@ -83,8 +83,8 @@ async def get_user_id_from_username(username: str):
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     if form_data.username not in users_database.keys():
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-    hashed_password = fake_hash_password(form_data.password)
-    if not hashed_password == users_database[form_data.username]:
+    hashed_password_rows = await database.fetch_all(f"SELECT HASHED_PASSWORD FROM USERS U WHERE U.USERNAME='{form_data.username}'")
+    if not pbkdf2_sha256.verify(form_data.password, hashed_password_rows[0][0]):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
     return {"access_token": form_data.username, "token_type": "bearer"}
@@ -149,6 +149,13 @@ async def get_favorites(current_user: User = Depends(get_current_user)):
         res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
 
     return res
+
+
+@app.post("/register")
+async def register_user(username: str, password: str):
+    password_hash = pbkdf2_sha256.hash(password)
+    await database.execute(f"INSERT INTO USERS (USERNAME, HASHED_PASSWORD) VALUES ('{username}', '{password_hash}')")
+    users_database.update({username: password_hash})
 
 
 @app.post("/swipe_right")
