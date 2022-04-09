@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 .idea/**
-=======
 server/.idea/**
 
 
@@ -50,4 +48,3 @@ app.*.map.json
 app/android/app/debug
 app/android/app/profile
 app/android/app/release
->>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
