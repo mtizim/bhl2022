@@ -54,17 +54,18 @@ class Sidebar extends StatelessWidget {
                                           .map(
                                             (money) => Material(
                                               color: (money == filters.minMoney)
-                                                  ? C.secondaryDarker
+                                                  ? C.fifth
                                                   : C.secondaryLighter,
                                               child: InkWell(
                                                 onTap: () => context
                                                     .read<SidebarManager>()
                                                     .chooseMinMoney(money),
-                                                splashColor: C.secondaryDarker,
+                                                splashColor: C.fourth,
                                                 child: Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
+                                                    const SizedBox(width: 4),
                                                     SizedBox(
                                                       height: 40,
                                                       width: 80,
@@ -74,7 +75,7 @@ class Sidebar extends StatelessWidget {
                                                             money,
                                                             (i) => Positioned(
                                                               top: 6,
-                                                              left: 7 *
+                                                              right: 7 *
                                                                   i.toDouble(),
                                                               child: Center(
                                                                 child: Icon(
@@ -93,7 +94,7 @@ class Sidebar extends StatelessWidget {
                                                     Text(FC.moneyDescriptions[
                                                         money]!),
                                                     const SizedBox(width: 8),
-                                                  ],
+                                                  ].reversed.toList(),
                                                 ),
                                               ),
                                             ),
@@ -119,15 +120,16 @@ class Sidebar extends StatelessWidget {
                                           .map(
                                             (money) => Material(
                                               color: (money == filters.maxMoney)
-                                                  ? C.secondaryDarker
+                                                  ? C.fifth
                                                   : C.secondaryLighter,
                                               child: InkWell(
                                                 onTap: () => context
                                                     .read<SidebarManager>()
                                                     .chooseMaxMoney(money),
-                                                splashColor: C.secondaryDarker,
+                                                splashColor: C.fourth,
                                                 child: Row(
                                                   children: [
+                                                    const SizedBox(width: 4),
                                                     SizedBox(
                                                       height: 40,
                                                       width: 80,
@@ -137,7 +139,7 @@ class Sidebar extends StatelessWidget {
                                                             money,
                                                             (i) => Positioned(
                                                               top: 6,
-                                                              left: 7 *
+                                                              right: 7 *
                                                                   i.toDouble(),
                                                               child: Icon(
                                                                 Icons.euro,
@@ -154,7 +156,7 @@ class Sidebar extends StatelessWidget {
                                                     Text(FC.moneyDescriptions[
                                                         money]!),
                                                     const SizedBox(width: 8),
-                                                  ],
+                                                  ].reversed.toList(),
                                                 ),
                                               ),
                                             ),
@@ -181,15 +183,16 @@ class Sidebar extends StatelessWidget {
                                           .map(
                                             (people) => Material(
                                               color: (people == filters.persons)
-                                                  ? C.secondaryDarker
+                                                  ? C.fifth
                                                   : C.secondaryLighter,
                                               child: InkWell(
                                                 onTap: () => context
                                                     .read<SidebarManager>()
                                                     .chooseGroupSize(people),
-                                                splashColor: C.secondaryDarker,
+                                                splashColor: C.fourth,
                                                 child: Row(
                                                   children: [
+                                                    const SizedBox(width: 2),
                                                     SizedBox(
                                                       height: 40,
                                                       width: 80,
@@ -199,7 +202,7 @@ class Sidebar extends StatelessWidget {
                                                             people,
                                                             (i) => Positioned(
                                                               top: 4,
-                                                              left: 6 *
+                                                              right: 6 *
                                                                   i.toDouble(),
                                                               child: Icon(
                                                                 Icons.boy,
@@ -216,7 +219,7 @@ class Sidebar extends StatelessWidget {
                                                     Text(FC.personDescriptions[
                                                         people]!),
                                                     const SizedBox(width: 8),
-                                                  ],
+                                                  ].reversed.toList(),
                                                 ),
                                               ),
                                             ),
@@ -230,18 +233,23 @@ class Sidebar extends StatelessWidget {
                           ),
                         )),
               ),
-              Material(
-                color: C.fourth,
-                child: InkWell(
-                  splashColor: C.fifth,
-                  onTap: () => context.read<AuthorizationManager>().logout(),
-                  child: SizedBox(
-                    height: 48,
-                    width: double.infinity,
-                    child: Center(
-                      child: Text(
-                        "Log out",
-                        style: TextStyle(color: C.secondary),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Material(
+                  color: C.fourth,
+                  borderRadius: C.borderradiusone,
+                  child: InkWell(
+                    borderRadius: C.borderradiusone,
+                    splashColor: C.fifth,
+                    onTap: () => context.read<AuthorizationManager>().logout(),
+                    child: SizedBox(
+                      height: 48,
+                      width: double.infinity,
+                      child: Center(
+                        child: Text(
+                          "Log out",
+                          style: TextStyle(color: C.secondary),
+                        ),
                       ),
                     ),
                   ),
