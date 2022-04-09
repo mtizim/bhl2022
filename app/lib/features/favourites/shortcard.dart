@@ -74,7 +74,7 @@ class _Scw extends StatelessWidget {
                           width: double.infinity,
                           color: C.secondaryLighter,
                           child: CachedNetworkImage(
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fitWidth,
                             imageUrl: data.imageLink.toString(),
                             placeholder: (context, url) => Center(
                                 child: CircularProgressIndicator(
