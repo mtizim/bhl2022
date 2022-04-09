@@ -83,10 +83,10 @@ async def get_user_id_from_username(username: str):
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     if form_data.username not in users_database.keys():
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(status_code=400, detail="Incorrect username or _password")
     hashed_password_rows = await database.fetch_all(f"SELECT HASHED_PASSWORD FROM USERS U WHERE U.USERNAME='{form_data.username}'")
     if not pbkdf2_sha256.verify(form_data.password, hashed_password_rows[0][0]):
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(status_code=400, detail="Incorrect username_ or password")
 
     return {"access_token": form_data.username, "token_type": "bearer"}
 
