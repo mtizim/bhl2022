@@ -19,6 +19,7 @@ class CardManager extends Cubit<CardManagerState> {
 
   void fetch(Filters filters) async {
     emit(const CardManagerState.loading());
+
     this.filters = filters;
 
     final token = authman.state.map(
@@ -62,7 +63,7 @@ class CardManager extends Cubit<CardManagerState> {
           timeEnd:
               e['start_date'] == null ? null : DateTime.parse(e['end_date'])),
     )).toList();
-
+    emit(const CardManagerState.loading());
     emit(CardManagerState.loaded(
       data: cards,
     ));

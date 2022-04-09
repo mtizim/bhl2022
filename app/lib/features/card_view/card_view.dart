@@ -62,7 +62,7 @@ class CardView extends StatelessWidget {
                                       final direction = properties.direction;
 
                                       final magnitude = Curves.easeIn.transform(
-                                          (properties.swipeProgress / 5)
+                                          (properties.swipeProgress / 4)
                                               .clamp(0, 1));
 
                                       if (direction == SwipeDirection.left) {

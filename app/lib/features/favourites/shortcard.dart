@@ -223,7 +223,7 @@ class _Scw extends StatelessWidget {
             child: Icon(
               rolledB ? Icons.expand_more : Icons.expand_less,
               size: 20,
-              color: C.fourth.withOpacity(0.1),
+              color: C.fourth.withOpacity(0.4),
             ),
           ),
         )

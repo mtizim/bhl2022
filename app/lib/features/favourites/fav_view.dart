@@ -43,15 +43,32 @@ class FavView extends StatelessWidget {
           builder: (context, state) => state.map(
             loading: (_) => Container(
               color: C.secondary,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(color: C.primary),
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Your liked",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  const BBar(),
-                ],
+                    const SizedBox(height: 2),
+                    Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(color: C.primary),
+                      ),
+                    ),
+                    const BBar(),
+                  ],
+                ),
               ),
             ),
             ready: (s) {
@@ -59,6 +76,21 @@ class FavView extends StatelessWidget {
                 return SafeArea(
                   child: Column(
                     children: const [
+                      SizedBox(height: 16),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Your liked",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 2),
                       Spacer(flex: 1),
                       Expanded(child: NoMore(text: "No liked events!")),
                       Spacer(flex: 1),
@@ -73,7 +105,24 @@ class FavView extends StatelessWidget {
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
-                            children:
+                            children: <Widget>[
+                                  const SizedBox(height: 16),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Your liked",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                ] +
                                 List<int>.generate(s.data.length, (i) => i)
                                     .map((dd) => ShortCardWidget(
                                           data: s.data[dd],

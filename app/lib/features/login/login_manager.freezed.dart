@@ -18,9 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$LoginViewStateTearOff {
   const _$LoginViewStateTearOff();
 
-  LoginLoginViewState login(String? error) {
+  LoginLoginViewState login(String? error, bool loading) {
     return LoginLoginViewState(
       error,
+      loading,
     );
   }
 
@@ -38,22 +39,23 @@ const $LoginViewState = _$LoginViewStateTearOff();
 /// @nodoc
 mixin _$LoginViewState {
   String? get error => throw _privateConstructorUsedError;
+  bool get loading => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? error) login,
+    required TResult Function(String? error, bool loading) login,
     required TResult Function(String? error, bool loading) register,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String? error)? login,
+    TResult Function(String? error, bool loading)? login,
     TResult Function(String? error, bool loading)? register,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? error)? login,
+    TResult Function(String? error, bool loading)? login,
     TResult Function(String? error, bool loading)? register,
     required TResult orElse(),
   }) =>
@@ -88,7 +90,7 @@ abstract class $LoginViewStateCopyWith<$Res> {
   factory $LoginViewStateCopyWith(
           LoginViewState value, $Res Function(LoginViewState) then) =
       _$LoginViewStateCopyWithImpl<$Res>;
-  $Res call({String? error});
+  $Res call({String? error, bool loading});
 }
 
 /// @nodoc
@@ -103,12 +105,17 @@ class _$LoginViewStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? error = freezed,
+    Object? loading = freezed,
   }) {
     return _then(_value.copyWith(
       error: error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      loading: loading == freezed
+          ? _value.loading
+          : loading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -120,7 +127,7 @@ abstract class $LoginLoginViewStateCopyWith<$Res>
           LoginLoginViewState value, $Res Function(LoginLoginViewState) then) =
       _$LoginLoginViewStateCopyWithImpl<$Res>;
   @override
-  $Res call({String? error});
+  $Res call({String? error, bool loading});
 }
 
 /// @nodoc
@@ -137,12 +144,17 @@ class _$LoginLoginViewStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? error = freezed,
+    Object? loading = freezed,
   }) {
     return _then(LoginLoginViewState(
       error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      loading == freezed
+          ? _value.loading
+          : loading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -150,14 +162,16 @@ class _$LoginLoginViewStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoginLoginViewState implements LoginLoginViewState {
-  const _$LoginLoginViewState(this.error);
+  const _$LoginLoginViewState(this.error, this.loading);
 
   @override
   final String? error;
+  @override
+  final bool loading;
 
   @override
   String toString() {
-    return 'LoginViewState.login(error: $error)';
+    return 'LoginViewState.login(error: $error, loading: $loading)';
   }
 
   @override
@@ -165,12 +179,15 @@ class _$LoginLoginViewState implements LoginLoginViewState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is LoginLoginViewState &&
-            const DeepCollectionEquality().equals(other.error, error));
+            const DeepCollectionEquality().equals(other.error, error) &&
+            const DeepCollectionEquality().equals(other.loading, loading));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(error),
+      const DeepCollectionEquality().hash(loading));
 
   @JsonKey(ignore: true)
   @override
@@ -180,30 +197,30 @@ class _$LoginLoginViewState implements LoginLoginViewState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? error) login,
+    required TResult Function(String? error, bool loading) login,
     required TResult Function(String? error, bool loading) register,
   }) {
-    return login(error);
+    return login(error, loading);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String? error)? login,
+    TResult Function(String? error, bool loading)? login,
     TResult Function(String? error, bool loading)? register,
   }) {
-    return login?.call(error);
+    return login?.call(error, loading);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? error)? login,
+    TResult Function(String? error, bool loading)? login,
     TResult Function(String? error, bool loading)? register,
     required TResult orElse(),
   }) {
     if (login != null) {
-      return login(error);
+      return login(error, loading);
     }
     return orElse();
   }
@@ -241,10 +258,13 @@ class _$LoginLoginViewState implements LoginLoginViewState {
 }
 
 abstract class LoginLoginViewState implements LoginViewState {
-  const factory LoginLoginViewState(String? error) = _$LoginLoginViewState;
+  const factory LoginLoginViewState(String? error, bool loading) =
+      _$LoginLoginViewState;
 
   @override
   String? get error;
+  @override
+  bool get loading;
   @override
   @JsonKey(ignore: true)
   $LoginLoginViewStateCopyWith<LoginLoginViewState> get copyWith =>
@@ -328,7 +348,7 @@ class _$RegisterViewState implements RegisterViewState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? error) login,
+    required TResult Function(String? error, bool loading) login,
     required TResult Function(String? error, bool loading) register,
   }) {
     return register(error, loading);
@@ -337,7 +357,7 @@ class _$RegisterViewState implements RegisterViewState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String? error)? login,
+    TResult Function(String? error, bool loading)? login,
     TResult Function(String? error, bool loading)? register,
   }) {
     return register?.call(error, loading);
@@ -346,7 +366,7 @@ class _$RegisterViewState implements RegisterViewState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? error)? login,
+    TResult Function(String? error, bool loading)? login,
     TResult Function(String? error, bool loading)? register,
     required TResult orElse(),
   }) {
@@ -394,6 +414,7 @@ abstract class RegisterViewState implements LoginViewState {
 
   @override
   String? get error;
+  @override
   bool get loading;
   @override
   @JsonKey(ignore: true)

@@ -3,6 +3,7 @@ import 'package:app/helpers/consts.dart';
 import 'package:app/helpers/round_container.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({
@@ -54,6 +55,31 @@ class CardWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(data.address),
+                  if (data.timeStart != null)
+                    Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        const SizedBox(
+                          width: 45,
+                          child: Text("From:"),
+                        ),
+                        Text(DateFormat('yyyy-MM-dd – kk:mm')
+                            .format(data.timeStart!)),
+                      ],
+                    ),
+                  if (data.timeEnd != null)
+                    if (data.timeStart != null)
+                      Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          const SizedBox(
+                            width: 45,
+                            child: Text("To:"),
+                          ),
+                          Text(DateFormat('yyyy-MM-dd – kk:mm')
+                              .format(data.timeEnd!)),
+                        ],
+                      ),
                   const SizedBox(height: 4),
                   Wrap(
                     alignment: WrapAlignment.start,
