@@ -1,12 +1,18 @@
 import 'package:app/features/branding/bbar.dart';
+import 'package:app/features/card_view/nomore.dart';
 import 'package:app/features/favourites/fav_manager.dart';
 import 'package:app/features/favourites/shortcard.dart';
+import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavViewRoute extends MaterialPageRoute<void> {
-  FavViewRoute() : super(builder: (context) => FavView());
+  FavViewRoute(AuthorizationManager manager)
+      : super(
+          builder: (context) =>
+              BlocProvider.value(value: manager, child: const FavView()),
+        );
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
@@ -28,38 +34,60 @@ class FavView extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: C.secondaryLight,
       body: BlocProvider(
-        create: (context) => FavouritesManager()..fetch(),
+        create: (context) => FavouritesManager(
+            loginState: context.read<AuthorizationManager>().state)
+          ..fetch(),
         child: BlocBuilder<FavouritesManager, FavouritesState>(
           builder: (context, state) => state.map(
             loading: (_) => Container(
               color: C.secondary,
-              child: Center(
-                child: CircularProgressIndicator(color: C.primary),
-              ),
-            ),
-            ready: (s) => SafeArea(
               child: Column(
                 children: [
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                          children: List<int>.generate(s.data.length, (i) => i)
-                              .map((dd) => ShortCardWidget(
-                                    data: s.data[dd],
-                                    key: Key(
-                                      dd.toString(),
-                                    ),
-                                  ))
-                              .toList()
-                              .spacedWith(const SizedBox(
-                                height: 16,
-                              ))),
+                    child: Center(
+                      child: CircularProgressIndicator(color: C.primary),
                     ),
                   ),
-                  const BBar()
+                  const BBar(),
                 ],
               ),
             ),
+            ready: (s) {
+              if (s.data.isEmpty) {
+                return SafeArea(
+                  child: Column(
+                    children: const [
+                      Expanded(child: NoMore(text: "No liked events!")),
+                      BBar(),
+                    ],
+                  ),
+                );
+              }
+              return SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                            children:
+                                List<int>.generate(s.data.length, (i) => i)
+                                    .map((dd) => ShortCardWidget(
+                                          data: s.data[dd],
+                                          key: Key(
+                                            dd.toString(),
+                                          ),
+                                        ))
+                                    .toList()
+                                    .spacedWith(const SizedBox(
+                                      height: 16,
+                                    ))),
+                      ),
+                    ),
+                    const BBar()
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),

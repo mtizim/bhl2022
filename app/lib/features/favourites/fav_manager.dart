@@ -1,48 +1,55 @@
+import 'dart:convert';
+
 import 'package:app/features/card_view/cardmanager.dart';
+import 'package:app/features/login/authorization_manager.dart';
+import 'package:app/helpers/consts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:http/http.dart' as http;
 
 part 'fav_manager.freezed.dart';
 
 class FavouritesManager extends Cubit<FavouritesState> {
-  FavouritesManager() : super(const FavouritesState.loading());
+  FavouritesManager({required this.loginState})
+      : super(const FavouritesState.loading());
 
+  final LoginState loginState;
   void fetch() async {
-    final d = CardData(
-      minCapacity: 3,
-      cost: 4,
-      address: "Chuj chuj chuj chuj działaj",
-      tags: [
-        "Schodki",
-        "Wódka",
-        "Chlańksko",
-        "Dużo tagów",
-        "Więcej",
-        "Family friendly"
-      ],
-      name: "Long ass event name at down town schodki warszawa",
-      description: "Lorem ipsum dolor sit amet sup dorempiditur anifemo volum ",
-      imageLink: Uri.tryParse("https://picsum.photos/280")!,
-      launch: Uri.tryParse("https://picsum.photos/280")!,
+    final token = loginState.map(
+      unknown: (_) => null,
+      loggedOut: (_) => null,
+      loggedIn: (s) => s.secret,
     );
-    final d2 = CardData(
-      minCapacity: 3,
-      cost: 4,
-      address: "Chuj chuj chujasd chuj działaj",
-      tags: [
-        "Schodki",
-        "Wódka",
-        "Chlańksko",
-        "Dużo tagów",
-        "Więcej",
-        "Family friendly"
-      ],
-      name: "Long ass event name at down town schodki warszawa",
-      description: "Lorem ipsum dolor sit amet sup dorempiditur anifemo volum ",
-      imageLink: Uri.tryParse("https://picsum.photos/280")!,
-      launch: Uri.tryParse("https://picsum.photos/280")!,
+    if (token == null) {
+      return;
+    }
+
+    final response = await http.get(
+      Uri.tryParse(C.serverAddress + "/favorites")!,
+      headers: {"accept": "application/json", "Authorization": "Bearer $token"},
     );
-    emit(FavouritesState.ready(data: [d, d2]));
+
+    if (response.statusCode != 200) {
+      return;
+    }
+
+    final data = jsonDecode(response.body);
+
+    final cards = (data.map<CardData>(
+      (e) => CardData(
+        id: e['id'],
+        minCapacity: e['min_capacity'],
+        cost: e['cost'],
+        address: e['address'],
+        tags: (e['tags'].map<String>((e) => e.toString())).toList(),
+        name: e['name'],
+        description: e['description'],
+        imageLink: Uri.tryParse(e['image_url'])!,
+        launch: Uri.tryParse(e['website_url'])!,
+      ),
+    )).toList();
+
+    emit(FavouritesState.ready(data: cards));
   }
 }
 

@@ -6,11 +6,15 @@ import 'package:app/features/login/login_manager.dart';
 import 'package:app/features/login/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends HookWidget {
+  const AuthScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final pwController = useTextEditingController();
+    final emailController = useTextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocProvider(
@@ -29,9 +33,18 @@ class AuthScreen extends StatelessWidget {
                   ),
                   const AppLogo(),
                   const Spacer(),
-                  state.map(
-                    login: (_) => LoginForm(),
-                    register: (_) => RegisterForm(),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    child: state.map(
+                      login: (_) => LoginForm(
+                        pwController: pwController,
+                        emailController: emailController,
+                      ),
+                      register: (_) => RegisterForm(
+                        pwController: pwController,
+                        emailController: emailController,
+                      ),
+                    ),
                   ),
                   const Spacer(flex: 3)
                 ],

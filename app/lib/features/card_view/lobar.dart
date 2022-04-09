@@ -1,6 +1,8 @@
 import 'package:app/features/favourites/fav_view.dart';
+import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LBar extends StatelessWidget {
   const LBar({Key? key}) : super(key: key);
@@ -42,7 +44,7 @@ class LBar extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () => Navigator.of(context).push(
-                    FavViewRoute(),
+                    FavViewRoute(context.read<AuthorizationManager>()),
                   ),
                   splashColor: C.fifth,
                   borderRadius: BorderRadius.only(

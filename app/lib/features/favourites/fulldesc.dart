@@ -11,7 +11,6 @@ class FullDesc extends StatelessWidget {
   final CardData data;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     throw UnimplementedError();
   }
 }

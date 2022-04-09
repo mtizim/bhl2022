@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:app/features/login/authorization_manager.dart';
@@ -13,7 +14,7 @@ class LoginManager extends Cubit<LoginViewState> {
 
   final AuthorizationManager authCubit;
 
-  Future<bool> submit_login_data(String email, String password) async {
+  Future<bool> submitLoginData(String email, String password) async {
     final emailRegex = RegExp(".+@.+");
     if (!emailRegex.hasMatch(email)) {
       emit(const LoginViewState.login("Not a valid email"));
@@ -25,13 +26,6 @@ class LoginManager extends Cubit<LoginViewState> {
       return false;
     }
 
-    // TODo contact endpoint for secret
-    final secret = "asd";
-    //   curl -X 'POST' \
-    // 'https://eventful1.herokuapp.com/token' \
-    // -H 'accept: application/json' \
-    // -H 'Content-Type: application/x-www-form-urlencoded' \
-    // -d 'grant_type=&username=uname&password=password&scope=&client_id=&client_secret='
     final response = await http.post(
       Uri.tryParse(C.serverAddress + '/token')!,
       headers: {
@@ -42,13 +36,22 @@ class LoginManager extends Cubit<LoginViewState> {
     );
 
     inspect(response);
+    if (response.statusCode == 400) {
+      emit(const LoginViewState.login("Bad login"));
+      return false;
+    }
+    if (response.statusCode != 200) {
+      return false;
+    }
 
-    // authCubit.login(secret);
-    // emit(const LoginViewState.login(null));
+    final secret = jsonDecode(response.body)['access_token']!;
+
+    authCubit.login(secret);
+    emit(const LoginViewState.login(null));
     return false;
   }
 
-  Future<bool> submit_register_data(
+  Future<bool> submitRegisterData(
       String email, String password, String passwordtwo) async {
     final emailRegex = RegExp(".+@.+");
     if (!emailRegex.hasMatch(email)) {
@@ -64,21 +67,34 @@ class LoginManager extends Cubit<LoginViewState> {
           "The password has to be longer than 8 characters"));
       return false;
     }
-    print("got here!");
 
-    // TODo contact endpoint for secret
-    final secret = "asd";
+    final response = await http.post(
+      Uri.tryParse(C.serverAddress + '/register')!,
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {"username": email, "password": password},
+    );
 
-    authCubit.login(secret);
+    if (response.statusCode == 400) {
+      emit(const LoginViewState.register("User already exists"));
+      return false;
+    }
+    if (response.statusCode != 200) {
+      return false;
+    }
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    await submitLoginData(email, password);
     emit(const LoginViewState.register(null));
-    return true;
+    return false;
   }
 
-  void go_to_login() {
+  void goToLogin() {
     emit(const LoginViewState.login(null));
   }
 
-  void go_to_register(String email, String password) {
+  void goToRegister(String email, String password) {
     emit(const LoginViewState.register(null));
   }
 }
