@@ -10,7 +10,7 @@ class AuthorizationManager extends Cubit<LoginState> {
   final storage = const FlutterSecureStorage();
 
   void tryAutologin() async {
-    await Future<void>.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     final token = await storage.read(key: "apiToken");
     if (token != null) {
       emit(LoginState.loggedIn(token));

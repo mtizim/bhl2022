@@ -29,9 +29,6 @@ class LoginForm extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 20,
-          ),
           Padding(
             padding: const EdgeInsets.only(left: 4),
             child: Text(

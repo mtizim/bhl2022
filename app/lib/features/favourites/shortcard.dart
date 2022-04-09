@@ -18,10 +18,41 @@ class ShortCardWidget extends HookWidget {
   Widget build(BuildContext context) {
     final rolled = useState(true);
 
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 300),
+      crossFadeState:
+          rolled.value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      secondChild: _Scw(
+        data: data,
+        rolled: rolled,
+        rolledB: false,
+      ),
+      firstChild: _Scw(
+        data: data,
+        rolled: rolled,
+        rolledB: true,
+      ),
+    );
+  }
+}
+
+class _Scw extends StatelessWidget {
+  const _Scw({
+    Key? key,
+    required this.rolled,
+    required this.rolledB,
+    required this.data,
+  }) : super(key: key);
+
+  final CardData data;
+  final ValueNotifier<bool> rolled;
+  final bool rolledB;
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         SizedBox(
-          height: rolled.value ? 350 : 700,
+          height: rolledB ? 350 : 700,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Material(
@@ -39,7 +70,7 @@ class ShortCardWidget extends HookWidget {
                       ClipRRect(
                         borderRadius: C.borderradiusone,
                         child: Container(
-                          height: rolled.value ? 130 : 260,
+                          height: rolledB ? 130 : 260,
                           width: double.infinity,
                           color: C.secondaryLighter,
                           child: CachedNetworkImage(
@@ -63,7 +94,7 @@ class ShortCardWidget extends HookWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(data.address),
-                      if (rolled.value) const Spacer(),
+                      if (rolledB) const Spacer(),
                       Row(
                         children: [
                           SizedBox(
@@ -115,7 +146,7 @@ class ShortCardWidget extends HookWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      !rolled.value
+                      !rolledB
                           ? Expanded(
                               child: SizedBox(
                                 child: Column(

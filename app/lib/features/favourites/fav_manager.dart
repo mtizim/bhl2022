@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:app/features/card_view/cardmanager.dart';
 import 'package:app/features/login/authorization_manager.dart';
@@ -10,12 +11,12 @@ import 'package:http/http.dart' as http;
 part 'fav_manager.freezed.dart';
 
 class FavouritesManager extends Cubit<FavouritesState> {
-  FavouritesManager({required this.loginState})
+  FavouritesManager({required this.authman})
       : super(const FavouritesState.loading());
 
-  final LoginState loginState;
+  final AuthorizationManager authman;
   void fetch() async {
-    final token = loginState.map(
+    final token = authman.state.map(
       unknown: (_) => null,
       loggedOut: (_) => null,
       loggedIn: (s) => s.secret,
@@ -28,6 +29,9 @@ class FavouritesManager extends Cubit<FavouritesState> {
       Uri.tryParse(C.serverAddress + "/favorites")!,
       headers: {"accept": "application/json", "Authorization": "Bearer $token"},
     );
+    if (response.statusCode == 401) {
+      authman.logout();
+    }
 
     if (response.statusCode != 200) {
       return;

@@ -1,3 +1,4 @@
+import 'package:app/features/branding/applogo.dart';
 import 'package:app/features/filters/sidebarmanager.dart';
 import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';
@@ -26,80 +27,75 @@ class Sidebar extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Preferences",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 32),
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
+                                const Center(child: AppLogoSidebar()),
                                 Text(
                                   "Min Budget",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: C.fourth),
                                 ),
-                                ClipRRect(
+                                Material(
+                                  elevation: 2,
                                   borderRadius: C.borderradiusone,
-                                  child: RContainer(
-                                    width: double.infinity,
-                                    color: C.secondary,
-                                    child: Column(
-                                      children: FC.moneyValues
-                                          .map(
-                                            (money) => Material(
-                                              color: (money == filters.minMoney)
-                                                  ? C.fifth
-                                                  : C.secondaryLighter,
-                                              child: InkWell(
-                                                onTap: () => context
-                                                    .read<SidebarManager>()
-                                                    .chooseMinMoney(money),
-                                                splashColor: C.fourth,
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    const SizedBox(width: 4),
-                                                    SizedBox(
-                                                      height: 40,
-                                                      width: 80,
-                                                      child: Stack(
-                                                        children: [
-                                                          ...List.generate(
-                                                            money,
-                                                            (i) => Positioned(
-                                                              top: 6,
-                                                              right: 7 *
-                                                                  i.toDouble(),
-                                                              child: Center(
-                                                                child: Icon(
-                                                                  Icons.euro,
-                                                                  size: 25,
-                                                                  color: C
-                                                                      .tertiary,
+                                  child: ClipRRect(
+                                    borderRadius: C.borderradiusone,
+                                    child: RContainer(
+                                      width: double.infinity,
+                                      color: C.secondary,
+                                      child: Column(
+                                        children: FC.moneyValues
+                                            .map(
+                                              (money) => Material(
+                                                color:
+                                                    (money == filters.minMoney)
+                                                        ? C.primaryLighter
+                                                        : C.secondaryLighter,
+                                                child: InkWell(
+                                                  onTap: () => context
+                                                      .read<SidebarManager>()
+                                                      .chooseMinMoney(money),
+                                                  splashColor: C.fourth,
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const SizedBox(width: 4),
+                                                      SizedBox(
+                                                        height: 40,
+                                                        width: 80,
+                                                        child: Stack(
+                                                          children: [
+                                                            ...List.generate(
+                                                              money,
+                                                              (i) => Positioned(
+                                                                top: 6,
+                                                                right: 7 *
+                                                                    i.toDouble(),
+                                                                child: Center(
+                                                                  child: Icon(
+                                                                    Icons.euro,
+                                                                    size: 25,
+                                                                    color: C
+                                                                        .tertiary,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ).toList(),
-                                                        ],
+                                                            ).toList(),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const Spacer(),
-                                                    Text(FC.moneyDescriptions[
-                                                        money]!),
-                                                    const SizedBox(width: 8),
-                                                  ].reversed.toList(),
+                                                      const Spacer(),
+                                                      Text(FC.moneyDescriptions[
+                                                          money]!),
+                                                      const SizedBox(width: 8),
+                                                    ].reversed.toList(),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                          .toList(),
+                                            )
+                                            .toList(),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -110,121 +106,132 @@ class Sidebar extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: C.fourth),
                                 ),
-                                ClipRRect(
+                                Material(
+                                  elevation: 2,
                                   borderRadius: C.borderradiusone,
-                                  child: RContainer(
-                                    width: double.infinity,
-                                    color: C.secondary,
-                                    child: Column(
-                                      children: FC.moneyValues
-                                          .map(
-                                            (money) => Material(
-                                              color: (money == filters.maxMoney)
-                                                  ? C.fifth
-                                                  : C.secondaryLighter,
-                                              child: InkWell(
-                                                onTap: () => context
-                                                    .read<SidebarManager>()
-                                                    .chooseMaxMoney(money),
-                                                splashColor: C.fourth,
-                                                child: Row(
-                                                  children: [
-                                                    const SizedBox(width: 4),
-                                                    SizedBox(
-                                                      height: 40,
-                                                      width: 80,
-                                                      child: Stack(
-                                                        children: [
-                                                          ...List.generate(
-                                                            money,
-                                                            (i) => Positioned(
-                                                              top: 6,
-                                                              right: 7 *
-                                                                  i.toDouble(),
-                                                              child: Icon(
-                                                                Icons.euro,
-                                                                size: 25,
-                                                                color:
-                                                                    C.tertiary,
+                                  child: ClipRRect(
+                                    borderRadius: C.borderradiusone,
+                                    child: RContainer(
+                                      width: double.infinity,
+                                      color: C.secondary,
+                                      child: Column(
+                                        children: FC.moneyValues
+                                            .map(
+                                              (money) => Material(
+                                                color:
+                                                    (money == filters.maxMoney)
+                                                        ? C.fifth
+                                                        : C.secondaryLighter,
+                                                child: InkWell(
+                                                  onTap: () => context
+                                                      .read<SidebarManager>()
+                                                      .chooseMaxMoney(money),
+                                                  splashColor: C.fourth,
+                                                  child: Row(
+                                                    children: [
+                                                      const SizedBox(width: 4),
+                                                      SizedBox(
+                                                        height: 40,
+                                                        width: 80,
+                                                        child: Stack(
+                                                          children: [
+                                                            ...List.generate(
+                                                              money,
+                                                              (i) => Positioned(
+                                                                top: 6,
+                                                                right: 7 *
+                                                                    i.toDouble(),
+                                                                child: Icon(
+                                                                  Icons.euro,
+                                                                  size: 25,
+                                                                  color: C
+                                                                      .tertiary,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ).toList(),
-                                                        ],
+                                                            ).toList(),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const Spacer(),
-                                                    Text(FC.moneyDescriptions[
-                                                        money]!),
-                                                    const SizedBox(width: 8),
-                                                  ].reversed.toList(),
+                                                      const Spacer(),
+                                                      Text(FC.moneyDescriptions[
+                                                          money]!),
+                                                      const SizedBox(width: 8),
+                                                    ].reversed.toList(),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                          .toList(),
+                                            )
+                                            .toList(),
+                                      ),
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 24),
                                 Text(
-                                  "Group",
+                                  "Your group size",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: C.fourth),
                                 ),
                                 const SizedBox(height: 8),
-                                ClipRRect(
+                                Material(
+                                  elevation: 2,
                                   borderRadius: C.borderradiusone,
-                                  child: RContainer(
-                                    width: double.infinity,
-                                    color: C.secondary,
-                                    child: Column(
-                                      children: FC.personValues
-                                          .map(
-                                            (people) => Material(
-                                              color: (people == filters.persons)
-                                                  ? C.fifth
-                                                  : C.secondaryLighter,
-                                              child: InkWell(
-                                                onTap: () => context
-                                                    .read<SidebarManager>()
-                                                    .chooseGroupSize(people),
-                                                splashColor: C.fourth,
-                                                child: Row(
-                                                  children: [
-                                                    const SizedBox(width: 2),
-                                                    SizedBox(
-                                                      height: 40,
-                                                      width: 80,
-                                                      child: Stack(
-                                                        children: [
-                                                          ...List.generate(
-                                                            people,
-                                                            (i) => Positioned(
-                                                              top: 4,
-                                                              right: 6 *
-                                                                  i.toDouble(),
-                                                              child: Icon(
-                                                                Icons.boy,
-                                                                size: 25,
-                                                                color:
-                                                                    C.tertiary,
+                                  child: ClipRRect(
+                                    borderRadius: C.borderradiusone,
+                                    child: RContainer(
+                                      width: double.infinity,
+                                      color: C.secondary,
+                                      child: Column(
+                                        children: FC.personValues
+                                            .map(
+                                              (people) => Material(
+                                                color:
+                                                    (people == filters.persons)
+                                                        ? C.fourth
+                                                        : C.secondaryLighter,
+                                                child: InkWell(
+                                                  onTap: () => context
+                                                      .read<SidebarManager>()
+                                                      .chooseGroupSize(people),
+                                                  splashColor: C.fourth,
+                                                  child: Row(
+                                                    children: [
+                                                      const SizedBox(width: 2),
+                                                      SizedBox(
+                                                        height: 40,
+                                                        width: 80,
+                                                        child: Stack(
+                                                          children: [
+                                                            ...List.generate(
+                                                              people,
+                                                              (i) => Positioned(
+                                                                top: 4,
+                                                                right: 6 *
+                                                                    i.toDouble(),
+                                                                child: Icon(
+                                                                  Icons.boy,
+                                                                  size: 25,
+                                                                  color: C
+                                                                      .tertiary,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ).toList(),
-                                                        ],
+                                                            ).toList(),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const Spacer(),
-                                                    Text(FC.personDescriptions[
-                                                        people]!),
-                                                    const SizedBox(width: 8),
-                                                  ].reversed.toList(),
+                                                      const Spacer(),
+                                                      Text(
+                                                          FC.personDescriptions[
+                                                              people]!),
+                                                      const SizedBox(width: 8),
+                                                    ].reversed.toList(),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                          .toList(),
+                                            )
+                                            .toList(),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -236,6 +243,7 @@ class Sidebar extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Material(
+                  elevation: 2,
                   color: C.fourth,
                   borderRadius: C.borderradiusone,
                   child: InkWell(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:app/features/filters/sidebarmanager.dart';
 import 'package:app/features/login/authorization_manager.dart';
@@ -10,18 +11,18 @@ import 'package:http/http.dart' as http;
 part 'cardmanager.freezed.dart';
 
 class CardManager extends Cubit<CardManagerState> {
-  CardManager({required this.loginState})
+  CardManager({required this.authman})
       : super(const CardManagerState.loading());
 
   late Filters filters;
 
-  final LoginState loginState;
+  final AuthorizationManager authman;
 
   void fetch(Filters filters) async {
     emit(const CardManagerState.loading());
     this.filters = filters;
 
-    final token = loginState.map(
+    final token = authman.state.map(
       unknown: (_) => null,
       loggedOut: (_) => null,
       loggedIn: (s) => s.secret,
@@ -36,6 +37,9 @@ class CardManager extends Cubit<CardManagerState> {
           "?offset=0&cards_amount=10&money_min=${filters.minMoney}&money_max=${filters.maxMoney}&min_capacity=${filters.persons}")!,
       headers: {"accept": "application/json", "Authorization": "Bearer $token"},
     );
+    if (response.statusCode == 401) {
+      authman.logout();
+    }
 
     if (response.statusCode != 200) {
       return;
@@ -63,7 +67,7 @@ class CardManager extends Cubit<CardManagerState> {
   }
 
   void _requestMoreData() async {
-    final token = loginState.map(
+    final token = authman.state.map(
       unknown: (_) => null,
       loggedOut: (_) => null,
       loggedIn: (s) => s.secret,
@@ -83,6 +87,9 @@ class CardManager extends Cubit<CardManagerState> {
           "?offset=$offset&cards_amount=10&money_min=${filters.minMoney}&money_max=${filters.maxMoney}&min_capacity=${filters.persons}")!,
       headers: {"accept": "application/json", "Authorization": "Bearer $token"},
     );
+    if (response.statusCode == 401) {
+      authman.logout();
+    }
 
     if (response.statusCode != 200) {
       return;
@@ -104,6 +111,8 @@ class CardManager extends Cubit<CardManagerState> {
       ),
     )).toList();
 
+    inspect(data);
+
     state.map(loaded: (s) => s.data.addAll(cards), loading: (_) => null);
   }
 
@@ -118,9 +127,9 @@ class CardManager extends Cubit<CardManagerState> {
     );
   }
 
-  void interested(int offset) async {
+  void interested(int offset, String id) async {
     _onNext(offset);
-    final token = loginState.map(
+    final token = authman.state.map(
       unknown: (_) => null,
       loggedOut: (_) => null,
       loggedIn: (s) => s.secret,
@@ -130,22 +139,25 @@ class CardManager extends Cubit<CardManagerState> {
     }
 
     final response = await http.post(
-      Uri.tryParse(C.serverAddress + "/swipe_right")!,
+      Uri.tryParse(C.serverAddress + "/swipe_right" + "?event_id=$id")!,
       headers: {
         "accept": "application/json",
         "Authorization": "Bearer $token",
-        "Content-Type": "application/json"
       },
     );
+
+    if (response.statusCode == 401) {
+      authman.logout();
+    }
 
     if (response.statusCode != 200) {
       return;
     }
   }
 
-  void uninterested(int offset) async {
+  void uninterested(int offset, String id) async {
     _onNext(offset);
-    final token = loginState.map(
+    final token = authman.state.map(
       unknown: (_) => null,
       loggedOut: (_) => null,
       loggedIn: (s) => s.secret,
@@ -155,13 +167,16 @@ class CardManager extends Cubit<CardManagerState> {
     }
 
     final response = await http.post(
-      Uri.tryParse(C.serverAddress + "/swipe_left")!,
+      Uri.tryParse(C.serverAddress + "/swipe_left" + "?event_id=$id")!,
       headers: {
         "accept": "application/json",
         "Authorization": "Bearer $token",
-        "Content-Type": "application/json"
       },
     );
+
+    if (response.statusCode == 401) {
+      authman.logout();
+    }
 
     if (response.statusCode != 200) {
       return;

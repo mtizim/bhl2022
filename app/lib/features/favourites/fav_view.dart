@@ -10,8 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class FavViewRoute extends MaterialPageRoute<void> {
   FavViewRoute(AuthorizationManager manager)
       : super(
-          builder: (context) =>
-              BlocProvider.value(value: manager, child: const FavView()),
+          builder: (context) => BlocProvider.value(
+            value: manager,
+            child: const FavView(),
+          ),
         );
 
   @override
@@ -34,9 +36,9 @@ class FavView extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: C.secondaryLight,
       body: BlocProvider(
-        create: (context) => FavouritesManager(
-            loginState: context.read<AuthorizationManager>().state)
-          ..fetch(),
+        create: (context) =>
+            FavouritesManager(authman: context.read<AuthorizationManager>())
+              ..fetch(),
         child: BlocBuilder<FavouritesManager, FavouritesState>(
           builder: (context, state) => state.map(
             loading: (_) => Container(
@@ -57,7 +59,9 @@ class FavView extends StatelessWidget {
                 return SafeArea(
                   child: Column(
                     children: const [
+                      Spacer(flex: 1),
                       Expanded(child: NoMore(text: "No liked events!")),
+                      Spacer(flex: 1),
                       BBar(),
                     ],
                   ),

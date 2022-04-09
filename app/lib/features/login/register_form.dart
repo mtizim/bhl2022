@@ -36,9 +36,6 @@ class RegisterForm extends HookWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 20,
-            ),
             Padding(
               padding: const EdgeInsets.only(left: 4),
               child: Text(
@@ -110,7 +107,8 @@ class RegisterForm extends HookWidget {
               height: 44,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                    left: 8, right: 8, top: 11, bottom: 4),
                 child: TextField(
                   textInputAction: TextInputAction.done,
                   style: fontStyle,
@@ -140,15 +138,24 @@ class RegisterForm extends HookWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: BlocBuilder<LoginManager, LoginViewState>(
-                    builder: (context, state) {
-                  return Text(
-                    state.map(
-                            login: (s) => s.error, register: (s) => s.error) ??
-                        "",
-                    style: TextStyle(color: C.tertiary),
-                    textAlign: TextAlign.center,
-                  );
-                }),
+                  builder: (context, state) => state.map(
+                    login: (s) => Text(s.error ?? "",
+                        style: TextStyle(
+                          color: C.tertiary,
+                        ),
+                        textAlign: TextAlign.center),
+                    register: (s) => s.loading
+                        ? CircularProgressIndicator(
+                            color: C.tertiary,
+                          )
+                        : Text(
+                            s.error ?? "",
+                            style: TextStyle(
+                              color: C.tertiary,
+                            ),
+                          ),
+                  ),
+                ),
               ),
             ),
             Material(

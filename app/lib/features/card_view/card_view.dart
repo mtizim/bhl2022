@@ -23,9 +23,9 @@ class CardView extends StatelessWidget {
         backgroundColor: C.secondaryLight,
         drawer: const Sidebar(),
         body: BlocProvider(
-          create: (ctx) => CardManager(
-              loginState: context.read<AuthorizationManager>().state)
-            ..fetch(ctx.read<SidebarManager>().state),
+          create: (ctx) =>
+              CardManager(authman: context.read<AuthorizationManager>())
+                ..fetch(ctx.read<SidebarManager>().state),
           child: BlocListener<SidebarManager, Filters>(
             listener: (context, state) =>
                 context.read<CardManager>().fetch(state),
@@ -138,19 +138,22 @@ class CardView extends StatelessWidget {
                                       return const SizedBox();
                                     },
                                     onSwipeCompleted: (index, direction) {
+                                      if (index >= s.data.length) {
+                                        return;
+                                      }
                                       final cubit = context.read<CardManager>();
                                       if (direction == SwipeDirection.left) {
-                                        cubit.uninterested(index);
+                                        cubit.uninterested(
+                                            index, s.data[index].id);
                                       }
                                       if (direction == SwipeDirection.right) {
-                                        cubit.interested(index);
+                                        cubit.interested(
+                                            index, s.data[index].id);
                                       }
                                       if (direction == SwipeDirection.up) {
-                                        cubit.interested(index);
-                                        if (index <= s.data.length) {
-                                          launch(
-                                              s.data[index].launch.toString());
-                                        }
+                                        cubit.interested(
+                                            index, s.data[index].id);
+                                        launch(s.data[index].launch.toString());
                                       }
                                     },
                                     builder: (context, properties) {
