@@ -122,6 +122,7 @@ class RegisterForm extends HookWidget {
                     if (succ) {
                       emailController.clear();
                       pwController.clear();
+                      pw2Controller.clear();
                     }
                   },
                   decoration: const InputDecoration(border: InputBorder.none),
@@ -172,6 +173,7 @@ class RegisterForm extends HookWidget {
                   if (succ) {
                     emailController.clear();
                     pwController.clear();
+                    pw2Controller.clear();
                   }
                 },
                 borderRadius: C.borderradiusone,

@@ -22,31 +22,34 @@ class AuthScreen extends HookWidget {
         child: BlocBuilder<LoginManager, LoginViewState>(
             builder: (context, state) {
           return SafeArea(
-            child: Container(
-              width: double.infinity,
-              color: C.primary,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 72,
-                  ),
-                  const AppLogo(),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    child: state.map(
-                      login: (_) => LoginForm(
-                        pwController: pwController,
-                        emailController: emailController,
-                      ),
-                      register: (_) => RegisterForm(
-                        pwController: pwController,
-                        emailController: emailController,
+            child: GestureDetector(
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: Container(
+                width: double.infinity,
+                color: C.primary,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 72,
+                    ),
+                    const AppLogo(),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      child: state.map(
+                        login: (_) => LoginForm(
+                          pwController: pwController,
+                          emailController: emailController,
+                        ),
+                        register: (_) => RegisterForm(
+                          pwController: pwController,
+                          emailController: emailController,
+                        ),
                       ),
                     ),
-                  ),
-                  const Spacer(flex: 3)
-                ],
+                    const Spacer(flex: 3)
+                  ],
+                ),
               ),
             ),
           );
