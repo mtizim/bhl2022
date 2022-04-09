@@ -12,6 +12,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (c) => LoginManager(c.read<AuthorizationManager>()),
         child: BlocBuilder<LoginManager, LoginViewState>(
@@ -23,12 +24,9 @@ class AuthScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-<<<<<<< HEAD
-=======
                   const SizedBox(
                     height: 72,
                   ),
->>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
                   const AppLogo(),
                   const Spacer(),
                   state.map(

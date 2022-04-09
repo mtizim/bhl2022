@@ -6,13 +6,9 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return Assets.actual.logo.image();
-=======
     return const Text(
       "LOGO",
       style: TextStyle(fontSize: 32),
     );
->>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
   }
 }

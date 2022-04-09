@@ -15,21 +15,14 @@ class MainView extends StatelessWidget {
       children: [
         BlocBuilder<AuthorizationManager, LoginState>(
           builder: (context, state) => state.map(
-<<<<<<< HEAD
-            unknown: (_) => Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: C.primary,
-              child: const Center(child: AppLogo()),
-=======
             unknown: (_) => Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Container(
                 height: double.infinity,
                 width: double.infinity,
                 color: C.primary,
                 child: const Center(child: AppLogo()),
               ),
->>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
             ),
             loggedOut: (_) => Container(
               height: double.infinity,
@@ -43,16 +36,6 @@ class MainView extends StatelessWidget {
           ),
         ),
         BlocBuilder<AuthorizationManager, LoginState>(
-<<<<<<< HEAD
-          builder: (context, state) => AnimatedOpacity(
-            opacity: state.map(
-              unknown: (_) => 0,
-              loggedOut: (_) => 1,
-              loggedIn: (_) => 0,
-            ),
-            duration: const Duration(milliseconds: 200),
-            child: AuthScreen(),
-=======
           builder: (context, state) => IgnorePointer(
             ignoring: state.map(
               unknown: (_) => true,
@@ -68,7 +51,6 @@ class MainView extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               child: AuthScreen(),
             ),
->>>>>>> 27fe72958701c08a555ae80cb3cccbcc0ec5d6c2
           ),
         ),
       ],

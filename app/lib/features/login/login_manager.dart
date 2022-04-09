@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:app/features/login/authorization_manager.dart';
+import 'package:app/helpers/consts.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,44 +13,65 @@ class LoginManager extends Cubit<LoginViewState> {
 
   final AuthorizationManager authCubit;
 
-  void submit_login_data(String email, String password) {
+  Future<bool> submit_login_data(String email, String password) async {
     final emailRegex = RegExp(".+@.+");
     if (!emailRegex.hasMatch(email)) {
       emit(const LoginViewState.login("Not a valid email"));
-      return;
+      return false;
     }
     if (password.length < 8) {
       emit(const LoginViewState.login(
           "The password has to be longer than 8 characters"));
-      return;
+      return false;
     }
 
     // TODo contact endpoint for secret
     final secret = "asd";
+    //   curl -X 'POST' \
+    // 'https://eventful1.herokuapp.com/token' \
+    // -H 'accept: application/json' \
+    // -H 'Content-Type: application/x-www-form-urlencoded' \
+    // -d 'grant_type=&username=uname&password=password&scope=&client_id=&client_secret='
+    final response = await http.post(
+      Uri.tryParse(C.serverAddress + '/token')!,
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {"username": email, "password": password},
+    );
 
-    authCubit.login(secret);
+    inspect(response);
+
+    // authCubit.login(secret);
+    // emit(const LoginViewState.login(null));
+    return false;
   }
 
-  void submit_register_data(String email, String password, String passwordtwo) {
+  Future<bool> submit_register_data(
+      String email, String password, String passwordtwo) async {
     final emailRegex = RegExp(".+@.+");
     if (!emailRegex.hasMatch(email)) {
       emit(const LoginViewState.register("Not a valid email"));
-      return;
+      return false;
     }
     if (password != passwordtwo) {
       emit(const LoginViewState.register("Passwords don't match"));
-      return;
+      return false;
     }
     if (password.length < 8) {
       emit(const LoginViewState.register(
           "The password has to be longer than 8 characters"));
-      return;
+      return false;
     }
     print("got here!");
 
     // TODo contact endpoint for secret
     final secret = "asd";
+
     authCubit.login(secret);
+    emit(const LoginViewState.register(null));
+    return true;
   }
 
   void go_to_login() {
