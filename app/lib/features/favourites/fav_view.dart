@@ -131,6 +131,8 @@ class FavView extends StatelessWidget {
                                           ),
                                         ))
                                     .toList()
+                                    .reversed
+                                    .toList()
                                     .spacedWith(const SizedBox(
                                       height: 16,
                                     ))),

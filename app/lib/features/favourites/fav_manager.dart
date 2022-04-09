@@ -41,19 +41,19 @@ class FavouritesManager extends Cubit<FavouritesState> {
 
     final cards = (data.map<CardData>(
       (e) => CardData(
-        id: e['id'],
-        minCapacity: e['min_capacity'],
-        cost: e['cost'],
-        address: e['address'],
-        tags: (e['tags'].map<String>((e) => e.toString())).toList(),
-        name: e['name'],
-        description: e['description'],
-        imageLink: Uri.tryParse(e['image_url'])!,
-        launch: Uri.tryParse(e['website_url'])!,
-        timeStart:
-            e['start_date'] == null ? null : DateTime.parse(e['start_date']),
-        timeEnd: e['start_date'] == null ? null : DateTime.parse(e['end_date']),
-      ),
+          id: e['id'],
+          minCapacity: e['min_capacity'],
+          cost: e['cost'],
+          address: e['address'],
+          tags: (e['tags'].map<String>((e) => e.toString())).toList(),
+          name: e['name'],
+          description: e['description'],
+          imageLink: Uri.tryParse(e['image_url'])!,
+          launch: Uri.tryParse(e['website_url'])!,
+          timeStart:
+              e['start_date'] == null ? null : DateTime.parse(e['start_date']),
+          timeEnd:
+              e['end_date'] == null ? null : DateTime.parse(e['end_date'])),
     )).toList();
 
     emit(FavouritesState.ready(data: cards));

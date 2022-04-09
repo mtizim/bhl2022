@@ -31,8 +31,9 @@ class Sidebar extends StatelessWidget {
                                 Text(
                                   "Min Budget",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: C.fourth),
+                                    fontWeight: FontWeight.bold,
+                                    color: C.fourth,
+                                  ),
                                 ),
                                 Material(
                                   elevation: 2,
@@ -51,9 +52,15 @@ class Sidebar extends StatelessWidget {
                                                         ? C.primaryLighter
                                                         : C.secondaryLighter,
                                                 child: InkWell(
-                                                  onTap: () => context
-                                                      .read<SidebarManager>()
-                                                      .chooseMinMoney(money),
+                                                  onTap: () {
+                                                    if (filters.maxMoney <
+                                                        money) {
+                                                      return;
+                                                    }
+                                                    context
+                                                        .read<SidebarManager>()
+                                                        .chooseMinMoney(money);
+                                                  },
                                                   splashColor: C.fourth,
                                                   child: Row(
                                                     crossAxisAlignment:
@@ -123,9 +130,15 @@ class Sidebar extends StatelessWidget {
                                                         ? C.fifth
                                                         : C.secondaryLighter,
                                                 child: InkWell(
-                                                  onTap: () => context
-                                                      .read<SidebarManager>()
-                                                      .chooseMaxMoney(money),
+                                                  onTap: () {
+                                                    if (filters.minMoney >
+                                                        money) {
+                                                      return;
+                                                    }
+                                                    context
+                                                        .read<SidebarManager>()
+                                                        .chooseMaxMoney(money);
+                                                  },
                                                   splashColor: C.fourth,
                                                   child: Row(
                                                     children: [

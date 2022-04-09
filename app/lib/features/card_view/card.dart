@@ -88,7 +88,7 @@ class CardWidget extends StatelessWidget {
                     children: data.tags
                         .map((tag) => RContainer(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 2),
+                                  horizontal: 6, vertical: 4),
                               color: C.fifth,
                               child: Text(
                                 tag,
@@ -150,10 +150,22 @@ class CardWidget extends StatelessWidget {
                   RContainer(height: 2, color: C.primary),
                   const SizedBox(height: 8),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Text(
-                        data.description,
-                        style: const TextStyle(fontSize: 18),
+                    child: ShaderMask(
+                      shaderCallback: (rect) => LinearGradient(
+                        begin: Alignment.center,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.black, Colors.black.withOpacity(0.0)],
+                      ).createShader(
+                          Rect.fromLTRB(0, 0, rect.width, rect.height)),
+                      blendMode: BlendMode.dstIn,
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 80),
+                          child: Text(
+                            data.description,
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
                       ),
                     ),
                   ),

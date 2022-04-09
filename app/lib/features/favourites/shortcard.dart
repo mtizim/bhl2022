@@ -52,7 +52,7 @@ class _Scw extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          height: rolledB ? 350 : 700,
+          height: rolledB ? 320 : 700,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Material(
@@ -161,8 +161,8 @@ class _Scw extends StatelessWidget {
                                             .map((tag) => RContainer(
                                                   padding: const EdgeInsets
                                                           .symmetric(
-                                                      horizontal: 4,
-                                                      vertical: 2),
+                                                      horizontal: 6,
+                                                      vertical: 4),
                                                   color: C.fifth,
                                                   child: Text(
                                                     tag,
