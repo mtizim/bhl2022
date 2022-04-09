@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:app/features/card_view/cardmanager.dart';
 import 'package:app/helpers/consts.dart';
 import 'package:app/helpers/round_container.dart';
@@ -23,7 +21,7 @@ class ShortCardWidget extends HookWidget {
     return Stack(
       children: [
         SizedBox(
-          height: rolled.value ? 350 : 600,
+          height: rolled.value ? 350 : 700,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Material(
@@ -45,6 +43,7 @@ class ShortCardWidget extends HookWidget {
                           width: double.infinity,
                           color: C.secondaryLighter,
                           child: CachedNetworkImage(
+                            fit: BoxFit.fitHeight,
                             imageUrl: data.imageLink.toString(),
                             placeholder: (context, url) => Center(
                                 child: CircularProgressIndicator(
@@ -83,6 +82,13 @@ class ShortCardWidget extends HookWidget {
                                     ),
                                   ),
                                 ).toList(),
+                                Positioned(
+                                  left: 8 + 6 * data.minCapacity.toDouble(),
+                                  child: Text(
+                                    "+",
+                                    style: TextStyle(color: C.tertiary),
+                                  ),
+                                )
                               ],
                             ),
                           ),

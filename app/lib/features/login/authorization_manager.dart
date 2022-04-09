@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'authorization_manager.freezed.dart';
 
 class AuthorizationManager extends Cubit<LoginState> {
   AuthorizationManager() : super(const LoginState.unknown());
+  final storage = const FlutterSecureStorage();
 
   void tryAutologin() async {
-    // TODO read secret from local storage
     await Future<void>.delayed(const Duration(milliseconds: 100));
-    emit(const LoginState.loggedIn("asd"));
-    // emit(const LoginState.loggedOut("asd"));
+    final token = await storage.read(key: "apiToken");
+    if (token != null) {
+      emit(LoginState.loggedIn(token));
+    } else {
+      emit(const LoginState.loggedOut(null));
+    }
   }
 
-  void login(String secret) {
-    // TODO contact endpoint
-    // TODO save secret on log in
-
+  void login(String secret) async {
+    await storage.write(key: "apiToken", value: secret);
     emit(LoginState.loggedIn(secret));
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
-  void logout() {
-    // TODO contact endpoint
-    // TODO clear secret
-
+  void logout() async {
+    await storage.delete(key: 'apiToken');
     emit(const LoginState.loggedOut(null));
   }
 }

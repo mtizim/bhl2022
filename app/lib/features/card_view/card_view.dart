@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:app/features/card_view/card.dart';
 import 'package:app/features/card_view/cardmanager.dart';
 import 'package:app/features/card_view/lobar.dart';
 import 'package:app/features/card_view/nomore.dart';
 import 'package:app/features/filters/sidebar.dart';
 import 'package:app/features/filters/sidebarmanager.dart';
+import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +12,8 @@ import 'package:swipable_stack/swipable_stack.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CardView extends StatelessWidget {
+  const CardView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -22,8 +23,9 @@ class CardView extends StatelessWidget {
         backgroundColor: C.secondaryLight,
         drawer: const Sidebar(),
         body: BlocProvider(
-          create: (ctx) =>
-              CardManager()..fetch(ctx.read<SidebarManager>().state),
+          create: (ctx) => CardManager(
+              loginState: context.read<AuthorizationManager>().state)
+            ..fetch(ctx.read<SidebarManager>().state),
           child: BlocListener<SidebarManager, Filters>(
             listener: (context, state) =>
                 context.read<CardManager>().fetch(state),
@@ -145,7 +147,10 @@ class CardView extends StatelessWidget {
                                       }
                                       if (direction == SwipeDirection.up) {
                                         cubit.interested(index);
-                                        launch(s.data[index].launch.toString());
+                                        if (index <= s.data.length) {
+                                          launch(
+                                              s.data[index].launch.toString());
+                                        }
                                       }
                                     },
                                     builder: (context, properties) {
@@ -153,7 +158,8 @@ class CardView extends StatelessWidget {
 
                                       return (idx < s.data.length)
                                           ? CardWidget(data: s.data[idx])
-                                          : const NoMore();
+                                          : const NoMore(
+                                              text: "No more matches :(");
                                     },
                                   ),
                                 ),

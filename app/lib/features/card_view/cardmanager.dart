@@ -1,72 +1,110 @@
+import 'dart:convert';
+
 import 'package:app/features/filters/sidebarmanager.dart';
+import 'package:app/features/login/authorization_manager.dart';
+import 'package:app/helpers/consts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:http/http.dart' as http;
 
 part 'cardmanager.freezed.dart';
 
 class CardManager extends Cubit<CardManagerState> {
-  CardManager() : super(const CardManagerState.loading());
+  CardManager({required this.loginState})
+      : super(const CardManagerState.loading());
 
   late Filters filters;
+
+  final LoginState loginState;
 
   void fetch(Filters filters) async {
     emit(const CardManagerState.loading());
     this.filters = filters;
-    // TODO get data from server with filters
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    final d = CardData(
-      minCapacity: 3,
-      cost: 4,
-      address: "Schodki warszawa powiat warszawski woj warszawskie",
-      tags: [
-        "Schodki",
-        "Wódka",
-        "Chlańksko",
-        "Dużo tagów",
-        "Więcej",
-        "Family friendly"
-      ],
-      name: "Long ass event name at down town schodki warszawa",
-      description: "Lorem ipsum dolor sit amet sup dorempiditur anifemo volum ",
-      imageLink: Uri.tryParse("https://picsum.photos/280")!,
-      launch: Uri.tryParse("https://picsum.photos/280")!,
+
+    final token = loginState.map(
+      unknown: (_) => null,
+      loggedOut: (_) => null,
+      loggedIn: (s) => s.secret,
     );
+    if (token == null) {
+      return;
+    }
+
+    final response = await http.get(
+      Uri.tryParse(C.serverAddress +
+          "/cards" +
+          "?offset=0&cards_amount=10&money_min=${filters.minMoney}&money_max=${filters.maxMoney}&min_capacity=${filters.persons}")!,
+      headers: {"accept": "application/json", "Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode != 200) {
+      return;
+    }
+
+    final data = jsonDecode(response.body);
+
+    final cards = (data.map<CardData>(
+      (e) => CardData(
+        id: e['id'],
+        minCapacity: e['min_capacity'],
+        cost: e['cost'],
+        address: e['address'],
+        tags: (e['tags'].map<String>((e) => e.toString())).toList(),
+        name: e['name'],
+        description: e['description'],
+        imageLink: Uri.tryParse(e['image_url'])!,
+        launch: Uri.tryParse(e['website_url'])!,
+      ),
+    )).toList();
+
     emit(CardManagerState.loaded(
-      data: [
-        d,
-        d,
-        d,
-        d,
-        d,
-        d,
-        d,
-        d,
-      ],
+      data: cards,
     ));
   }
 
   void _requestMoreData() async {
-    // TODo get data from server with filters
-    final d = CardData(
-      minCapacity: 3,
-      cost: 4,
-      address: "Chuj chuj chuj chuj działaj",
-      tags: [
-        "Schodki",
-        "Wódka",
-        "Chlańksko",
-        "Dużo tagów",
-        "Więcej",
-        "Family friendly"
-      ],
-      name: "Long ass event name at down town schodki warszawa",
-      description: "Lorem ipsum dolor sit amet sup dorempiditur anifemo volum ",
-      imageLink: Uri.tryParse("https://picsum.photos/280")!,
-      launch: Uri.tryParse("https://picsum.photos/280")!,
+    final token = loginState.map(
+      unknown: (_) => null,
+      loggedOut: (_) => null,
+      loggedIn: (s) => s.secret,
     );
-    await Future<void>.delayed(const Duration(milliseconds: 10));
-    state.map(loaded: (s) => s.data.add(d), loading: (_) => null);
-    print("reached end of data");
+    if (token == null) {
+      return;
+    }
+    final offset =
+        state.map(loading: (_) => null, loaded: (s) => s.data.length);
+
+    if (offset == null) {
+      return;
+    }
+    final response = await http.get(
+      Uri.tryParse(C.serverAddress +
+          "/cards" +
+          "?offset=$offset&cards_amount=10&money_min=${filters.minMoney}&money_max=${filters.maxMoney}&min_capacity=${filters.persons}")!,
+      headers: {"accept": "application/json", "Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode != 200) {
+      return;
+    }
+
+    final data = jsonDecode(response.body);
+
+    final cards = (data.map<CardData>(
+      (e) => CardData(
+        id: e['id'],
+        minCapacity: e['min_capacity'],
+        cost: e['cost'],
+        address: e['address'],
+        tags: (e['tags'].map<String>((e) => e.toString())).toList(),
+        name: e['name'],
+        description: e['description'],
+        imageLink: Uri.tryParse(e['image_url'])!,
+        launch: Uri.tryParse(e['website_url'])!,
+      ),
+    )).toList();
+
+    state.map(loaded: (s) => s.data.addAll(cards), loading: (_) => null);
   }
 
   void _onNext(int offset) {
@@ -80,12 +118,54 @@ class CardManager extends Cubit<CardManagerState> {
     );
   }
 
-  void interested(int offset) {
+  void interested(int offset) async {
     _onNext(offset);
+    final token = loginState.map(
+      unknown: (_) => null,
+      loggedOut: (_) => null,
+      loggedIn: (s) => s.secret,
+    );
+    if (token == null) {
+      return;
+    }
+
+    final response = await http.post(
+      Uri.tryParse(C.serverAddress + "/swipe_right")!,
+      headers: {
+        "accept": "application/json",
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json"
+      },
+    );
+
+    if (response.statusCode != 200) {
+      return;
+    }
   }
 
-  void uninterested(int offset) {
+  void uninterested(int offset) async {
     _onNext(offset);
+    final token = loginState.map(
+      unknown: (_) => null,
+      loggedOut: (_) => null,
+      loggedIn: (s) => s.secret,
+    );
+    if (token == null) {
+      return;
+    }
+
+    final response = await http.post(
+      Uri.tryParse(C.serverAddress + "/swipe_left")!,
+      headers: {
+        "accept": "application/json",
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json"
+      },
+    );
+
+    if (response.statusCode != 200) {
+      return;
+    }
   }
 }
 
@@ -95,11 +175,6 @@ class CardManagerState with _$CardManagerState {
   const factory CardManagerState.loaded({
     required List<CardData> data,
   }) = CardManagerLoadedState;
-}
-
-CardData? parseData(dynamic data) {
-  print(data);
-  return null;
 }
 
 @freezed
@@ -113,5 +188,6 @@ class CardData with _$CardData {
     required String description,
     required Uri imageLink,
     required Uri launch,
+    required String id,
   }) = _CardData;
 }

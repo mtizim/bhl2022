@@ -1,6 +1,5 @@
 import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';
-import 'package:app/features/login/auths_screen.dart';
 import 'package:app/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

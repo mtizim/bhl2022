@@ -32,7 +32,7 @@ class MainView extends StatelessWidget {
                 child: CircularProgressIndicator(color: C.primary),
               ),
             ),
-            loggedIn: (_) => CardView(),
+            loggedIn: (_) => const CardView(),
           ),
         ),
         BlocBuilder<AuthorizationManager, LoginState>(
@@ -49,7 +49,7 @@ class MainView extends StatelessWidget {
                 loggedIn: (_) => 0,
               ),
               duration: const Duration(milliseconds: 200),
-              child: AuthScreen(),
+              child: const AuthScreen(),
             ),
           ),
         ),

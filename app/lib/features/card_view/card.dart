@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:app/features/card_view/cardmanager.dart';
 import 'package:app/helpers/consts.dart';
 import 'package:app/helpers/round_container.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({
@@ -37,6 +34,7 @@ class CardWidget extends StatelessWidget {
                       width: double.infinity,
                       color: C.secondaryLighter,
                       child: CachedNetworkImage(
+                        fit: BoxFit.fitHeight,
                         imageUrl: data.imageLink.toString(),
                         placeholder: (context, url) => Center(
                             child:
@@ -51,7 +49,7 @@ class CardWidget extends StatelessWidget {
                     data.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.w900,
-                      fontSize: 22,
+                      fontSize: 28,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -92,6 +90,13 @@ class CardWidget extends StatelessWidget {
                                 ),
                               ),
                             ).toList(),
+                            Positioned(
+                              left: 8 + 6 * data.minCapacity.toDouble(),
+                              child: Text(
+                                "+",
+                                style: TextStyle(color: C.tertiary),
+                              ),
+                            )
                           ],
                         ),
                       ),

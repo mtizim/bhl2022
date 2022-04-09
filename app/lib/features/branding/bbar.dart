@@ -1,4 +1,3 @@
-import 'package:app/features/favourites/fav_view.dart';
 import 'package:app/helpers/consts.dart';
 import 'package:flutter/material.dart';
 

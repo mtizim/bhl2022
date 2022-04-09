@@ -1,26 +1,31 @@
-import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/features/login/login_manager.dart';
 import 'package:app/helpers/consts.dart';
+import 'package:app/helpers/round_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../helpers/round_container.dart';
-
 class RegisterForm extends HookWidget {
+  const RegisterForm({
+    Key? key,
+    required this.emailController,
+    required this.pwController,
+  }) : super(key: key);
+
+  final TextEditingController pwController;
+  final TextEditingController emailController;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
-    final pwController = useTextEditingController();
     final pw2Controller = useTextEditingController();
-    final emailController = useTextEditingController();
 
     const fontStyle = TextStyle(fontSize: 20);
 
+    final pwNode = useFocusNode();
+    final pw2Node = useFocusNode();
+
     return WillPopScope(
       onWillPop: () async {
-        context.read<LoginManager>().go_to_login();
+        context.read<LoginManager>().goToLogin();
         return false;
       },
       child: Padding(
@@ -47,8 +52,11 @@ class RegisterForm extends HookWidget {
               height: 44,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                    left: 8, right: 8, top: 11, bottom: 4),
                 child: TextField(
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => pwNode.requestFocus(),
                   style: fontStyle,
                   controller: emailController,
                   decoration: const InputDecoration(border: InputBorder.none),
@@ -71,8 +79,12 @@ class RegisterForm extends HookWidget {
               height: 44,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                    left: 8, right: 8, top: 11, bottom: 4),
                 child: TextField(
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => pw2Node.requestFocus(),
+                  focusNode: pwNode,
                   style: fontStyle,
                   controller: pwController,
                   decoration: const InputDecoration(border: InputBorder.none),
@@ -100,10 +112,24 @@ class RegisterForm extends HookWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  textInputAction: TextInputAction.done,
                   style: fontStyle,
+                  onEditingComplete: () async {
+                    final succ =
+                        await context.read<LoginManager>().submitRegisterData(
+                              emailController.text,
+                              pwController.text,
+                              pw2Controller.text,
+                            );
+                    if (succ) {
+                      emailController.clear();
+                      pwController.clear();
+                    }
+                  },
                   decoration: const InputDecoration(border: InputBorder.none),
                   controller: pw2Controller,
                   obscureText: true,
+                  focusNode: pw2Node,
                   enableSuggestions: false,
                   autocorrect: false,
                 ),
@@ -131,7 +157,7 @@ class RegisterForm extends HookWidget {
               child: InkWell(
                 onTap: () async {
                   final succ =
-                      await context.read<LoginManager>().submit_register_data(
+                      await context.read<LoginManager>().submitRegisterData(
                             emailController.text,
                             pwController.text,
                             pw2Controller.text,
