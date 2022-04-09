@@ -100,7 +100,10 @@ def get_datetime(string: str):
     if string is None:
         return None
     else:
-        return datetime(int(string[6:10]), int(string[3:5]), int(string[0:2]))
+        try:
+            return datetime(int(string[6:10]), int(string[3:5]), int(string[0:2]))
+        catch:
+            return None
 
 
 @app.get("/cards", response_model=List[Card])
