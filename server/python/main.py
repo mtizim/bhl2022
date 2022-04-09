@@ -8,16 +8,12 @@ from server.python.models import Card
 from server.python.filters import Filters
 from typing import List
 
-
 database = Database("sqlite:///server/database.db")
-
 
 users_database = {}
 cached_database = {}
 
-
 cache_database = {}
-
 
 app = FastAPI()
 
@@ -100,15 +96,16 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
                     current_user: User = Depends(get_current_user)):
     name = current_user.username
     if name not in cache_database or offset == 0:
-        cards = await database.fetch_all(f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION FROM EVENTS E "
-                                         f"WHERE E.PRICE_RANGE >= {money_min} "
-                                         f"AND E.PRICE_RANGE <= {money_max} "
-                                         f"AND E.MIN_CAPACITY <= {min_capacity} "
-                                         f"AND NOT EXISTS "
-                                         f"(SELECT * FROM EVENT_TO_USER EU "
-                                         f"JOIN USERS U ON U.USER_ID = EU.USER_ID "
-                                         f"WHERE EU.EVENT_ID = E.EVENT_ID AND U.USERNAME = '{name}') "
-                                         f"GROUP BY E.NAME")
+        cards = await database.fetch_all(
+            f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION FROM EVENTS E "
+            f"WHERE E.PRICE_RANGE >= {money_min} "
+            f"AND E.PRICE_RANGE <= {money_max} "
+            f"AND E.MIN_CAPACITY <= {min_capacity} "
+            f"AND NOT EXISTS "
+            f"(SELECT * FROM EVENT_TO_USER EU "
+            f"JOIN USERS U ON U.USER_ID = EU.USER_ID "
+            f"WHERE EU.EVENT_ID = E.EVENT_ID AND U.USERNAME = '{name}') "
+            f"GROUP BY E.NAME")
 
         if name not in cache_database:
             cache_database.update({name: []})
@@ -118,15 +115,18 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
 
         for row in cards:
             tag_rows = await database.fetch_all(f"SELECT T.NAME FROM EVENTS E "
-                                            f"JOIN TAGS_TO_EVENTS TE ON E.EVENT_ID = TE.EVENT_ID "
-                                            f"JOIN TAGS T ON TE.TAG_ID = T.TAG_ID "
-                                            f"WHERE E.NAME = '{row[5]}'")
+                                                f"JOIN TAGS_TO_EVENTS TE ON E.EVENT_ID = TE.EVENT_ID "
+                                                f"JOIN TAGS T ON TE.TAG_ID = T.TAG_ID "
+                                                f"WHERE E.NAME = '{row[5]}'")
             tags = []
             for tag_row in tag_rows:
                 tags.append(tag_row[0])
-            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
+            cache_database[name].append(
+                Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4],
+                     tags=tags, name=row[5], description=row[6]))
 
-    return cache_database[name][min(len(cache_database[name]), offset):min(offset + cards_amount, len(cache_database[name]))]
+    return cache_database[name][
+           min(len(cache_database[name]), offset):min(offset + cards_amount, len(cache_database[name]))]
 
 
 @app.get("/favorites", response_model=List[Card])
@@ -146,7 +146,9 @@ async def get_favorites(current_user: User = Depends(get_current_user)):
         tags = []
         for tag_row in tag_rows:
             tags.append(tag_row[0])
-        res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
+        res.append(
+            Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4],
+                 tags=tags, name=row[5], description=row[6]))
 
     return res
 
@@ -155,12 +157,19 @@ async def get_favorites(current_user: User = Depends(get_current_user)):
 async def swipe_right(card: Card, current_user: User = Depends(get_current_user)):
     user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
     event_id = await database.fetch_all(f"SELECT EVENT_ID FROM EVENTS E WHERE E.NAME='{card.name}'")
-    await database.execute(f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 1)")
+    await database.execute(
+        f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 1)")
 
 
 @app.post("/swipe_left")
 async def swipe_left(card: Card, current_user: User = Depends(get_current_user)):
     user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
     event_id = await database.fetch_all(f"SELECT EVENT_ID FROM EVENTS E WHERE E.NAME='{card.name}'")
-    await database.execute(f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 0)")
+    await database.execute(
+        f"INSERT INTO EVENT_TO_USER (USER_ID, EVENT_ID, CHOICE) VALUES ({user_id[0][0]}, {event_id[0][0]}, 0)")
 
+
+@app.post("/register")
+async def register_user(username: str, password: str):
+    password_hash = "123"  # use hashing function
+    await database.execute(f"INSERT INTO USERS (USERNAME, HASHED_PASSWORD) VALUES ({username}, {password_hash})")
