@@ -3,3 +3,4 @@ databases
 uvicorn
 aiosqlite
 python-multipart
+passlib
