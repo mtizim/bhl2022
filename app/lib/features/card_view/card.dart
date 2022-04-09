@@ -14,6 +14,7 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var math;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Material(
@@ -130,6 +131,28 @@ class CardWidget extends StatelessWidget {
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.undo,
+                        color: C.fourth.withOpacity(0.3),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.north,
+                        color: C.fourth.withOpacity(0.3),
+                      ),
+                      const Spacer(),
+                      Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationY(3.1415),
+                        child: Icon(
+                          Icons.undo,
+                          color: C.fourth.withOpacity(0.3),
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),

@@ -8,7 +8,7 @@ class AppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 189,
       width: 320,
       child: Stack(
         fit: StackFit.expand,
@@ -41,7 +41,7 @@ class AppLogo extends StatelessWidget {
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
-              padding: const EdgeInsets.only(right: 60),
+              padding: const EdgeInsets.only(right: 58.75),
               child: Text(
                 "U",
                 style: GoogleFonts.monoton().copyWith(
@@ -55,11 +55,81 @@ class AppLogo extends StatelessWidget {
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
-              padding: const EdgeInsets.only(right: 133),
+              padding: const EdgeInsets.only(right: 133.25),
               child: Text(
                 "F",
                 style: GoogleFonts.monoton().copyWith(
                   fontSize: 80,
+                  fontWeight: FontWeight.w500,
+                  color: C.tertiary,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AppLogoSidebar extends StatelessWidget {
+  const AppLogoSidebar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 130,
+      width: 220,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              C.appNameF,
+              style: GoogleFonts.monoton().copyWith(
+                fontSize: 55,
+                fontWeight: FontWeight.w500,
+                color: C.tertiary,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 1.5),
+              child: Text(
+                "L",
+                style: GoogleFonts.monoton().copyWith(
+                  fontSize: 55,
+                  fontWeight: FontWeight.w500,
+                  color: C.tertiary,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 40.5),
+              child: Text(
+                "U",
+                style: GoogleFonts.monoton().copyWith(
+                  fontSize: 55,
+                  fontWeight: FontWeight.w500,
+                  color: C.tertiary,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 91.5),
+              child: Text(
+                "F",
+                style: GoogleFonts.monoton().copyWith(
+                  fontSize: 55,
                   fontWeight: FontWeight.w500,
                   color: C.tertiary,
                 ),

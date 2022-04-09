@@ -47,25 +47,26 @@ class LoginManager extends Cubit<LoginViewState> {
 
     authCubit.login(secret);
     emit(const LoginViewState.login(null));
-    return false;
+    return true;
   }
 
   Future<bool> submitRegisterData(
       String email, String password, String passwordtwo) async {
     final emailRegex = RegExp(".+@.+");
     if (!emailRegex.hasMatch(email)) {
-      emit(const LoginViewState.register("Not a valid email"));
+      emit(const LoginViewState.register("Not a valid email", false));
       return false;
     }
     if (password != passwordtwo) {
-      emit(const LoginViewState.register("Passwords don't match"));
+      emit(const LoginViewState.register("Passwords don't match", false));
       return false;
     }
     if (password.length < 8) {
       emit(const LoginViewState.register(
-          "The password has to be longer than 8 characters"));
+          "The password has to be longer than 8 characters", false));
       return false;
     }
+    emit(const LoginViewState.register(null, true));
 
     final response = await http.post(
       Uri.tryParse(C.serverAddress + '/register')!,
@@ -77,16 +78,16 @@ class LoginManager extends Cubit<LoginViewState> {
     );
 
     if (response.statusCode == 409) {
-      emit(const LoginViewState.register("User already exists"));
+      emit(const LoginViewState.register("User already exists", false));
       return false;
     }
     if (response.statusCode != 200) {
       return false;
     }
-    await Future<void>.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     await submitLoginData(email, password);
-    emit(const LoginViewState.register(null));
-    return false;
+    emit(const LoginViewState.register(null, false));
+    return true;
   }
 
   void goToLogin() {
@@ -94,12 +95,13 @@ class LoginManager extends Cubit<LoginViewState> {
   }
 
   void goToRegister(String email, String password) {
-    emit(const LoginViewState.register(null));
+    emit(const LoginViewState.register(null, false));
   }
 }
 
 @freezed
 class LoginViewState with _$LoginViewState {
   const factory LoginViewState.login(String? error) = LoginLoginViewState;
-  const factory LoginViewState.register(String? error) = RegisterViewState;
+  const factory LoginViewState.register(String? error, bool loading) =
+      RegisterViewState;
 }

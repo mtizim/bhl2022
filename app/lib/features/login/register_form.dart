@@ -138,15 +138,24 @@ class RegisterForm extends HookWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: BlocBuilder<LoginManager, LoginViewState>(
-                    builder: (context, state) {
-                  return Text(
-                    state.map(
-                            login: (s) => s.error, register: (s) => s.error) ??
-                        "",
-                    style: TextStyle(color: C.tertiary),
-                    textAlign: TextAlign.center,
-                  );
-                }),
+                  builder: (context, state) => state.map(
+                    login: (s) => Text(s.error ?? "",
+                        style: TextStyle(
+                          color: C.tertiary,
+                        ),
+                        textAlign: TextAlign.center),
+                    register: (s) => s.loading
+                        ? CircularProgressIndicator(
+                            color: C.tertiary,
+                          )
+                        : Text(
+                            s.error ?? "",
+                            style: TextStyle(
+                              color: C.tertiary,
+                            ),
+                          ),
+                  ),
+                ),
               ),
             ),
             Material(

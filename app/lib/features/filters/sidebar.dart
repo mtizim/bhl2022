@@ -1,3 +1,4 @@
+import 'package:app/features/branding/applogo.dart';
 import 'package:app/features/filters/sidebarmanager.dart';
 import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';
@@ -26,18 +27,7 @@ class Sidebar extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Preferences",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 32),
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
+                                const Center(child: AppLogoSidebar()),
                                 Text(
                                   "Min Budget",
                                   style: TextStyle(

@@ -143,8 +143,8 @@ class CardManager extends Cubit<CardManagerState> {
         "Authorization": "Bearer $token",
       },
     );
-
     inspect(response);
+
     if (response.statusCode == 401) {
       authman.logout();
     }

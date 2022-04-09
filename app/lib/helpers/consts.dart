@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 class C {
   static Color primary = const Color.fromARGB(255, 99, 228, 189);
-  static Color primaryDarker = Color.fromARGB(255, 57, 210, 164);
-  static Color primaryLighter = Color.fromARGB(255, 155, 227, 205);
+  static Color primaryDarker = const Color.fromARGB(255, 57, 210, 164);
+  static Color primaryLighter = const Color.fromARGB(255, 155, 227, 205);
   static Color secondaryDarker = const Color.fromARGB(255, 255, 232, 206);
   static Color secondary = const Color(0xFFFFEEDB);
   static Color secondaryLight = const Color.fromARGB(255, 255, 246, 235);
