@@ -37,7 +37,7 @@ class FavouritesManager extends Cubit<FavouritesState> {
 
     final cards = (data.map<CardData>(
       (e) => CardData(
-        id: e['id'],
+        id: "e['id']",
         minCapacity: e['min_capacity'],
         cost: e['cost'],
         address: e['address'],

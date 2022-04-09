@@ -167,7 +167,7 @@ class Sidebar extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 24),
                                 Text(
-                                  "Group",
+                                  "Your group size",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: C.fourth),
