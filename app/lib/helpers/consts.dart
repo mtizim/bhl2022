@@ -8,6 +8,7 @@ class C {
   static Color secondary = const Color(0xFFFFEEDB);
   static Color secondaryLight = const Color.fromARGB(255, 255, 246, 235);
   static Color secondaryLighter = const Color.fromARGB(255, 255, 250, 245);
+  static Color secondaryLighterGreyed = Color.fromARGB(255, 209, 204, 199);
   static Color tertiary = const Color(0xFFF05365);
   static Color fourth = const Color(0xFF426B69);
   static Color fifth = const Color(0xFF7A9CC6);

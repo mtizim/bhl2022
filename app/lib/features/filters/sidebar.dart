@@ -47,9 +47,11 @@ class Sidebar extends StatelessWidget {
                                         children: FC.moneyValues
                                             .map(
                                               (money) => Material(
-                                                color:
-                                                    (money == filters.minMoney)
-                                                        ? C.primaryLighter
+                                                color: (money ==
+                                                        filters.minMoney)
+                                                    ? C.primaryLighter
+                                                    : (filters.maxMoney < money)
+                                                        ? C.secondaryLighterGreyed
                                                         : C.secondaryLighter,
                                                 child: InkWell(
                                                   onTap: () {
@@ -125,9 +127,11 @@ class Sidebar extends StatelessWidget {
                                         children: FC.moneyValues
                                             .map(
                                               (money) => Material(
-                                                color:
-                                                    (money == filters.maxMoney)
-                                                        ? C.fifth
+                                                color: (money ==
+                                                        filters.maxMoney)
+                                                    ? C.primaryLighter
+                                                    : (filters.minMoney > money)
+                                                        ? C.secondaryLighterGreyed
                                                         : C.secondaryLighter,
                                                 child: InkWell(
                                                   onTap: () {
