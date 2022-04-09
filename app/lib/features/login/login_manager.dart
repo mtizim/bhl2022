@@ -35,7 +35,6 @@ class LoginManager extends Cubit<LoginViewState> {
       body: {"username": email, "password": password},
     );
 
-    inspect(response);
     if (response.statusCode == 400) {
       emit(const LoginViewState.login("Bad login"));
       return false;
@@ -77,7 +76,7 @@ class LoginManager extends Cubit<LoginViewState> {
       body: {"username": email, "password": password},
     );
 
-    if (response.statusCode == 400) {
+    if (response.statusCode == 409) {
       emit(const LoginViewState.register("User already exists"));
       return false;
     }

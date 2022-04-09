@@ -32,7 +32,6 @@ class AuthScreen extends HookWidget {
                     height: 72,
                   ),
                   const AppLogo(),
-                  const Spacer(),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 500),
                     child: state.map(
