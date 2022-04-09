@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:app/features/card_view/cardmanager.dart';
 import 'package:app/features/login/authorization_manager.dart';
@@ -50,6 +49,9 @@ class FavouritesManager extends Cubit<FavouritesState> {
         description: e['description'],
         imageLink: Uri.tryParse(e['image_url'])!,
         launch: Uri.tryParse(e['website_url'])!,
+        timeStart:
+            e['start_date'] == null ? null : DateTime.parse(e['start_date']),
+        timeEnd: e['start_date'] == null ? null : DateTime.parse(e['end_date']),
       ),
     )).toList();
 

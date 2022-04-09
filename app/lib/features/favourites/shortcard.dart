@@ -214,6 +214,18 @@ class _Scw extends StatelessWidget {
               ),
             ),
           ),
+        ),
+        Positioned(
+          bottom: 24,
+          right: 0,
+          left: 0,
+          child: Center(
+            child: Icon(
+              rolledB ? Icons.expand_more : Icons.expand_less,
+              size: 20,
+              color: C.fourth.withOpacity(0.1),
+            ),
+          ),
         )
       ],
     );

@@ -345,7 +345,9 @@ class _$CardDataTearOff {
       required String description,
       required Uri imageLink,
       required Uri launch,
-      required String id}) {
+      required String id,
+      required DateTime? timeStart,
+      required DateTime? timeEnd}) {
     return _CardData(
       minCapacity: minCapacity,
       cost: cost,
@@ -356,6 +358,8 @@ class _$CardDataTearOff {
       imageLink: imageLink,
       launch: launch,
       id: id,
+      timeStart: timeStart,
+      timeEnd: timeEnd,
     );
   }
 }
@@ -374,6 +378,8 @@ mixin _$CardData {
   Uri get imageLink => throw _privateConstructorUsedError;
   Uri get launch => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  DateTime? get timeStart => throw _privateConstructorUsedError;
+  DateTime? get timeEnd => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CardDataCopyWith<CardData> get copyWith =>
@@ -393,7 +399,9 @@ abstract class $CardDataCopyWith<$Res> {
       String description,
       Uri imageLink,
       Uri launch,
-      String id});
+      String id,
+      DateTime? timeStart,
+      DateTime? timeEnd});
 }
 
 /// @nodoc
@@ -415,6 +423,8 @@ class _$CardDataCopyWithImpl<$Res> implements $CardDataCopyWith<$Res> {
     Object? imageLink = freezed,
     Object? launch = freezed,
     Object? id = freezed,
+    Object? timeStart = freezed,
+    Object? timeEnd = freezed,
   }) {
     return _then(_value.copyWith(
       minCapacity: minCapacity == freezed
@@ -453,6 +463,14 @@ class _$CardDataCopyWithImpl<$Res> implements $CardDataCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      timeStart: timeStart == freezed
+          ? _value.timeStart
+          : timeStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      timeEnd: timeEnd == freezed
+          ? _value.timeEnd
+          : timeEnd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -471,7 +489,9 @@ abstract class _$CardDataCopyWith<$Res> implements $CardDataCopyWith<$Res> {
       String description,
       Uri imageLink,
       Uri launch,
-      String id});
+      String id,
+      DateTime? timeStart,
+      DateTime? timeEnd});
 }
 
 /// @nodoc
@@ -494,6 +514,8 @@ class __$CardDataCopyWithImpl<$Res> extends _$CardDataCopyWithImpl<$Res>
     Object? imageLink = freezed,
     Object? launch = freezed,
     Object? id = freezed,
+    Object? timeStart = freezed,
+    Object? timeEnd = freezed,
   }) {
     return _then(_CardData(
       minCapacity: minCapacity == freezed
@@ -532,6 +554,14 @@ class __$CardDataCopyWithImpl<$Res> extends _$CardDataCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      timeStart: timeStart == freezed
+          ? _value.timeStart
+          : timeStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      timeEnd: timeEnd == freezed
+          ? _value.timeEnd
+          : timeEnd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -548,7 +578,9 @@ class _$_CardData implements _CardData {
       required this.description,
       required this.imageLink,
       required this.launch,
-      required this.id});
+      required this.id,
+      required this.timeStart,
+      required this.timeEnd});
 
   @override
   final int minCapacity;
@@ -568,10 +600,14 @@ class _$_CardData implements _CardData {
   final Uri launch;
   @override
   final String id;
+  @override
+  final DateTime? timeStart;
+  @override
+  final DateTime? timeEnd;
 
   @override
   String toString() {
-    return 'CardData(minCapacity: $minCapacity, cost: $cost, address: $address, tags: $tags, name: $name, description: $description, imageLink: $imageLink, launch: $launch, id: $id)';
+    return 'CardData(minCapacity: $minCapacity, cost: $cost, address: $address, tags: $tags, name: $name, description: $description, imageLink: $imageLink, launch: $launch, id: $id, timeStart: $timeStart, timeEnd: $timeEnd)';
   }
 
   @override
@@ -589,7 +625,9 @@ class _$_CardData implements _CardData {
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.imageLink, imageLink) &&
             const DeepCollectionEquality().equals(other.launch, launch) &&
-            const DeepCollectionEquality().equals(other.id, id));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.timeStart, timeStart) &&
+            const DeepCollectionEquality().equals(other.timeEnd, timeEnd));
   }
 
   @override
@@ -603,7 +641,9 @@ class _$_CardData implements _CardData {
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(imageLink),
       const DeepCollectionEquality().hash(launch),
-      const DeepCollectionEquality().hash(id));
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(timeStart),
+      const DeepCollectionEquality().hash(timeEnd));
 
   @JsonKey(ignore: true)
   @override
@@ -621,7 +661,9 @@ abstract class _CardData implements CardData {
       required String description,
       required Uri imageLink,
       required Uri launch,
-      required String id}) = _$_CardData;
+      required String id,
+      required DateTime? timeStart,
+      required DateTime? timeEnd}) = _$_CardData;
 
   @override
   int get minCapacity;
@@ -641,6 +683,10 @@ abstract class _CardData implements CardData {
   Uri get launch;
   @override
   String get id;
+  @override
+  DateTime? get timeStart;
+  @override
+  DateTime? get timeEnd;
   @override
   @JsonKey(ignore: true)
   _$CardDataCopyWith<_CardData> get copyWith =>

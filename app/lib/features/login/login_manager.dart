@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:app/features/login/authorization_manager.dart';
 import 'package:app/helpers/consts.dart';

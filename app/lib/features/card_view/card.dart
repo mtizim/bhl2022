@@ -14,7 +14,6 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var math;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Material(
