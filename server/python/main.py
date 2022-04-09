@@ -75,6 +75,10 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return user
 
 
+async def get_user_id_from_username(username: str):
+    return await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{username}'")
+
+
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     if form_data.username not in users_database.keys():
@@ -94,9 +98,8 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 @app.get("/cards", response_model=List[Card])
 async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: int, min_capacity: int,
                     current_user: User = Depends(get_current_user)):
-    cache_page = 50
     name = current_user.username
-    if name not in cache_database or len(cache_database[name]) < offset + cards_amount:
+    if name not in cache_database or offset == 0:
         cards = await database.fetch_all(f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION FROM EVENTS E "
                                          f"WHERE E.PRICE_RANGE >= {money_min} "
                                          f"AND E.PRICE_RANGE <= {money_max} "
@@ -105,9 +108,7 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
                                          f"(SELECT * FROM EVENT_TO_USER EU "
                                          f"JOIN USERS U ON U.USER_ID = EU.USER_ID "
                                          f"WHERE EU.EVENT_ID = E.EVENT_ID AND U.USERNAME = '{name}') "
-                                         f"GROUP BY E.NAME LIMIT {cache_page}")
-        print("Fetched new data")
-        pprint(cards)
+                                         f"GROUP BY E.NAME")
 
         if name not in cache_database:
             cache_database.update({name: []})
@@ -116,13 +117,38 @@ async def get_cards(offset: int, cards_amount: int, money_min: int, money_max: i
             cache_database[name].clear()
 
         for row in cards:
-            tags = await database.fetch_all(f"SELECT T.NAME FROM EVENTS E "
+            tag_rows = await database.fetch_all(f"SELECT T.NAME FROM EVENTS E "
                                             f"JOIN TAGS_TO_EVENTS TE ON E.EVENT_ID = TE.EVENT_ID "
                                             f"JOIN TAGS T ON TE.TAG_ID = T.TAG_ID "
                                             f"WHERE E.NAME = '{row[5]}'")
-            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=['tag1', 'tag2'], name=row[5], description=row[6]))
+            tags = []
+            for tag_row in tag_rows:
+                tags.append(tag_row[0])
+            cache_database[name].append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
 
     return cache_database[name][min(len(cache_database[name]), offset):min(offset + cards_amount, len(cache_database[name]))]
+
+
+@app.get("/favorites", response_model=List[Card])
+async def get_favorites(current_user: User = Depends(get_current_user)):
+    user_id = await database.fetch_all(f"SELECT USER_ID FROM USERS U WHERE U.USERNAME='{current_user.username}'")
+    cards = await database.fetch_all(
+        f"SELECT E.MIN_CAPACITY, E.PRICE_RANGE, E.IMAGE_URL, E.WEBSITE_URL, E.ADDRESS, E.NAME, E.DESCRIPTION FROM EVENTS E "
+        f"JOIN EVENT_TO_USER EU ON E.EVENT_ID = EU.EVENT_ID "
+        f"WHERE EU.USER_ID = {user_id[0][0]} AND EU.CHOICE = 1")
+    res = []
+
+    for row in cards:
+        tag_rows = await database.fetch_all(f"SELECT T.NAME FROM EVENTS E "
+                                            f"JOIN TAGS_TO_EVENTS TE ON E.EVENT_ID = TE.EVENT_ID "
+                                            f"JOIN TAGS T ON TE.TAG_ID = T.TAG_ID "
+                                            f"WHERE E.NAME = '{row[5]}'")
+        tags = []
+        for tag_row in tag_rows:
+            tags.append(tag_row[0])
+        res.append(Card(min_capacity=int(row[0]), cost=int(row[1]), image_url=row[2], website_url=row[3], address=row[4], tags=tags, name=row[5], description=row[6]))
+
+    return res
 
 
 @app.post("/swipe_right")
