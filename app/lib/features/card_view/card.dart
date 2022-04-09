@@ -134,9 +134,13 @@ class CardWidget extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.undo,
-                        color: C.fourth.withOpacity(0.3),
+                      Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationZ(0.5),
+                        child: Icon(
+                          Icons.undo,
+                          color: C.fourth.withOpacity(0.3),
+                        ),
                       ),
                       const Spacer(),
                       Icon(
@@ -146,7 +150,8 @@ class CardWidget extends StatelessWidget {
                       const Spacer(),
                       Transform(
                         alignment: Alignment.center,
-                        transform: Matrix4.rotationY(3.1415),
+                        transform: Matrix4.rotationY(3.1415)
+                            .multiplied(Matrix4.rotationZ(0.5)),
                         child: Icon(
                           Icons.undo,
                           color: C.fourth.withOpacity(0.3),

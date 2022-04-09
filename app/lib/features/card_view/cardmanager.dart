@@ -111,6 +111,8 @@ class CardManager extends Cubit<CardManagerState> {
       ),
     )).toList();
 
+    inspect(data);
+
     state.map(loaded: (s) => s.data.addAll(cards), loading: (_) => null);
   }
 
@@ -143,7 +145,6 @@ class CardManager extends Cubit<CardManagerState> {
         "Authorization": "Bearer $token",
       },
     );
-    inspect(response);
 
     if (response.statusCode == 401) {
       authman.logout();

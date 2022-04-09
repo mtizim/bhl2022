@@ -29,7 +29,6 @@ class FavouritesManager extends Cubit<FavouritesState> {
       Uri.tryParse(C.serverAddress + "/favorites")!,
       headers: {"accept": "application/json", "Authorization": "Bearer $token"},
     );
-    inspect(response);
     if (response.statusCode == 401) {
       authman.logout();
     }
