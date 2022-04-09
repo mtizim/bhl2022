@@ -29,6 +29,7 @@ class FavouritesManager extends Cubit<FavouritesState> {
       headers: {"accept": "application/json", "Authorization": "Bearer $token"},
     );
     if (response.statusCode == 401) {
+      print("Logoutfav $token");
       authman.logout();
     }
 

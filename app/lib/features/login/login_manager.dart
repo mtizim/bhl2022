@@ -36,7 +36,6 @@ class LoginManager extends Cubit<LoginViewState> {
       body: {"username": email, "password": password},
     );
 
-    inspect(response);
     if (response.statusCode == 400) {
       emit(const LoginViewState.login("Bad authentication", false));
       return false;
@@ -86,7 +85,7 @@ class LoginManager extends Cubit<LoginViewState> {
     if (response.statusCode != 200) {
       return false;
     }
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 1000));
     await submitLoginData(email, password);
     emit(const LoginViewState.register(null, false));
     return true;

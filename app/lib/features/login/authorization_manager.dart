@@ -21,6 +21,7 @@ class AuthorizationManager extends Cubit<LoginState> {
 
   void login(String secret) async {
     await storage.write(key: "apiToken", value: secret);
+    emit(const LoginState.loggedOut(null));
     emit(LoginState.loggedIn(secret));
     FocusManager.instance.primaryFocus?.unfocus();
   }
